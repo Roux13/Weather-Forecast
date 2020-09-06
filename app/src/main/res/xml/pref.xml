@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <SwitchPreferenceCompat
+        android:defaultValue="true"
+        android:key="@string/switch_enable_update_preferences_key"
+        android:title="@string/enable_forecast_update"
+        android:visibility="visible"/>
+    <EditTextPreference
+        android:defaultValue="5"
+        android:key="@string/edit_text_period_preferences_key"
+        android:selectAllOnFocus="true"
+        android:singleLine="true"
+        android:title="@string/update_period"
+        android:visibility="visible"
+        app:dependency="@string/switch_enable_update_preferences_key"
+        app:useSimpleSummaryProvider="true" />
+</PreferenceScreen>

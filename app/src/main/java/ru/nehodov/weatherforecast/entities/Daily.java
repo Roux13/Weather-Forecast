@@ -10,8 +10,9 @@ import com.google.gson.annotations.SerializedName;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Arrays;
+import java.util.Objects;
 
-import ru.nehodov.weatherforecast.WeatherArrayConverter;
+import ru.nehodov.weatherforecast.utils.WeatherArrayConverter;
 
 @Entity
 public class Daily {
@@ -176,5 +177,35 @@ public class Daily {
                 + ", humidity='" + humidity + '\''
                 + ", windSpeed='" + windSpeed + '\''
                 + '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        Daily daily = (Daily) o;
+        return  Objects.equals(sunrise, daily.sunrise)
+                && Objects.equals(temp, daily.temp)
+                && Objects.equals(uvi, daily.uvi)
+                && Objects.equals(pressure, daily.pressure)
+                && Objects.equals(clouds, daily.clouds)
+                && Objects.equals(dateTime, daily.dateTime)
+                && Objects.equals(pop, daily.pop)
+                && Objects.equals(sunset, daily.sunset)
+                && Arrays.equals(weather, daily.weather)
+                && Objects.equals(humidity, daily.humidity)
+                && Objects.equals(windSpeed, daily.windSpeed);
+    }
+
+    @Override
+    public int hashCode() {
+        int result = Objects.hash(id, sunrise, temp, uvi, pressure,
+                clouds, dateTime, pop, sunset, humidity, windSpeed);
+        result = 31 * result + Arrays.hashCode(weather);
+        return result;
     }
 }

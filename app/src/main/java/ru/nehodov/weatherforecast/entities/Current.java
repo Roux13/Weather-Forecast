@@ -1,9 +1,7 @@
 package ru.nehodov.weatherforecast.entities;
 
-import androidx.room.Embedded;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
-import androidx.room.TypeConverter;
 import androidx.room.TypeConverters;
 
 import com.google.gson.annotations.SerializedName;
@@ -12,7 +10,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.Arrays;
 
-import ru.nehodov.weatherforecast.WeatherArrayConverter;
+import ru.nehodov.weatherforecast.utils.WeatherArrayConverter;
 
 @Entity
 public class Current {
@@ -37,6 +35,9 @@ public class Current {
 
     private String sunset;
 
+    @SerializedName("feels_like")
+    private String feelsLike;
+
     @TypeConverters(WeatherArrayConverter.class)
     private Weather[] weather;
 
@@ -45,9 +46,9 @@ public class Current {
     private String windSpeed;
 
     @SuppressWarnings("checkstyle:ParameterNumber")
-    public Current(long id, String sunrise, String temp,
-                   String visibility, String uvi, String pressure,
-                   String clouds, String dateTime, String sunset,
+    public Current(long id, String sunrise, String temp, String visibility,
+                   String uvi, String pressure, String clouds,
+                   String dateTime, String sunset, String feelsLike,
                    Weather[] weather, String humidity, String windSpeed) {
         this.id = id;
         this.sunrise = sunrise;
@@ -58,6 +59,7 @@ public class Current {
         this.clouds = clouds;
         this.dateTime = dateTime;
         this.sunset = sunset;
+        this.feelsLike = feelsLike;
         this.weather = weather;
         this.humidity = humidity;
         this.windSpeed = windSpeed;
@@ -157,6 +159,14 @@ public class Current {
 
     public void setWindSpeed(String windSpeed) {
         this.windSpeed = windSpeed;
+    }
+
+    public String getFeelsLike() {
+        return feelsLike;
+    }
+
+    public void setFeelsLike(String feelsLike) {
+        this.feelsLike = feelsLike;
     }
 
     @NotNull

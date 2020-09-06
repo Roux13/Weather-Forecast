@@ -2,19 +2,20 @@ package ru.nehodov.weatherforecast.entities;
 
 import com.google.gson.annotations.SerializedName;
 
-import org.jetbrains.annotations.NotNull;
-
 import java.util.Arrays;
+import java.util.StringJoiner;
 
 public class Forecast {
 
     private Current current;
 
+    private String timezone;
+
     @SerializedName("lat")
-    private String latitude;
+    private double latitude;
 
     @SerializedName("lon")
-    private String longitude;
+    private double longitude;
 
     private Daily[] daily;
 
@@ -28,6 +29,14 @@ public class Forecast {
         this.current = current;
     }
 
+    public String getTimezone() {
+        return timezone;
+    }
+
+    public void setTimezone(String timezone) {
+        this.timezone = timezone;
+    }
+
     public Daily[] getDaily() {
         return daily;
     }
@@ -36,11 +45,11 @@ public class Forecast {
         this.daily = daily;
     }
 
-    public String getLongitude() {
+    public double getLongitude() {
         return longitude;
     }
 
-    public void setLongitude(String longitude) {
+    public void setLongitude(double longitude) {
         this.longitude = longitude;
     }
 
@@ -52,22 +61,24 @@ public class Forecast {
         this.hourly = hourly;
     }
 
-    public String getLatitude() {
+    public double getLatitude() {
         return latitude;
     }
 
-    public void setLatitude(String latitude) {
+    public void setLatitude(double latitude) {
         this.latitude = latitude;
     }
 
-    @NotNull
     @Override
     public String toString() {
-        return "ApiResponse{"
-                + "current=" + current
-                + ", daily=" + Arrays.toString(daily)
-                + ", lon='" + longitude + '\'' + ", hourly="
-                + Arrays.toString(hourly) + ", lat='" + latitude + '\'' + '}';
+        return new StringJoiner(", ", Forecast.class.getSimpleName() + "[", "]")
+                .add("timezone='" + timezone + "'")
+                .add("latitude=" + latitude)
+                .add("longitude=" + longitude)
+                .add("current=" + current)
+                .add("daily=" + Arrays.toString(daily))
+                .add("hourly=" + Arrays.toString(hourly))
+                .toString();
     }
 }
 

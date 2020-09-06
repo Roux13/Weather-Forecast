@@ -1,6 +1,5 @@
 package ru.nehodov.weatherforecast.entities;
 
-import androidx.room.Embedded;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 import androidx.room.TypeConverters;
@@ -11,7 +10,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.Arrays;
 
-import ru.nehodov.weatherforecast.WeatherArrayConverter;
+import ru.nehodov.weatherforecast.utils.WeatherArrayConverter;
 
 @Entity
 public class Hourly {

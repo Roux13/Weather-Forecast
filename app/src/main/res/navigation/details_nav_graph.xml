@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    app:startDestination="@id/detailsFragment">
+
+    <fragment
+        android:id="@+id/detailsFragment"
+        android:name="ru.nehodov.weatherforecast.ui.DetailsFragment"
+        android:label="DetailsFragment" >
+        <argument
+            android:name="numberOfDay"
+            app:argType="integer"
+            android:defaultValue="0" />
+    </fragment>
+    <action android:id="@+id/action_global_detailsFragment" app:destination="@id/detailsFragment" />
+</navigation>

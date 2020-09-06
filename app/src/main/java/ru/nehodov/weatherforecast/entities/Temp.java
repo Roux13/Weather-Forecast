@@ -2,6 +2,8 @@ package ru.nehodov.weatherforecast.entities;
 
 import org.jetbrains.annotations.NotNull;
 
+import java.util.Objects;
+
 public class Temp {
 
     private String min;
@@ -31,5 +33,23 @@ public class Temp {
                 + "min='" + min + '\''
                 + ", max='" + max + '\''
                 + '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        Temp temp = (Temp) o;
+        return Objects.equals(min, temp.min)
+                && Objects.equals(max, temp.max);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(min, max);
     }
 }

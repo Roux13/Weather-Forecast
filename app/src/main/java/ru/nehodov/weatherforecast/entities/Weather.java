@@ -1,12 +1,10 @@
 package ru.nehodov.weatherforecast.entities;
 
-import androidx.room.ColumnInfo;
-import androidx.room.Entity;
-import androidx.room.PrimaryKey;
-
 import com.google.gson.annotations.SerializedName;
 
 import org.jetbrains.annotations.NotNull;
+
+import java.util.Objects;
 
 public class Weather {
 
@@ -67,5 +65,25 @@ public class Weather {
                 + ", main='" + main + '\''
                 + ", id='" + apiId + '\''
                 + '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        Weather weather = (Weather) o;
+        return Objects.equals(icon, weather.icon)
+                && Objects.equals(description, weather.description)
+                && Objects.equals(main, weather.main)
+                && Objects.equals(apiId, weather.apiId);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(icon, description, main, apiId);
     }
 }

@@ -1,37 +1,42 @@
 package ru.nehodov.weatherforecast.viewmodels;
 
 import android.app.Application;
+import android.location.Location;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
+import androidx.lifecycle.MutableLiveData;
 
 import java.util.List;
 
-import ru.nehodov.weatherforecast.database.ForecastDatabase;
 import ru.nehodov.weatherforecast.entities.Current;
+import ru.nehodov.weatherforecast.entities.CurrentLocation;
 import ru.nehodov.weatherforecast.entities.Daily;
 import ru.nehodov.weatherforecast.entities.Hourly;
 import ru.nehodov.weatherforecast.repository.ForecastRepository;
 
 public class ForecastViewModel extends AndroidViewModel {
 
+    private final static Integer TODAY = 0;
+
     private final ForecastRepository repository;
 
     private final LiveData<Current> currentWeather;
     private final LiveData<List<Daily>> dailyForecast;
     private final LiveData<List<Hourly>> hourlyForecast;
+    private final LiveData<CurrentLocation> currentLocation;
+
+    private final MutableLiveData<Integer> selectedDayData = new MutableLiveData<>();
 
     public ForecastViewModel(@NonNull Application application) {
         super(application);
-        ForecastDatabase db = ForecastDatabase.getInstance(application);
-        repository = new ForecastRepository(
-                db.getCurrentDao(),
-                db.getDailyDao(),
-                db.getHourlyDao());
+        repository = new ForecastRepository(application);
         currentWeather = repository.getCurrentWeather();
         dailyForecast = repository.getDailyForecast();
         hourlyForecast = repository.getHourlyForecast();
+        currentLocation = repository.getCurrentLocation();
+        selectedDayData.setValue(TODAY);
     }
 
     public LiveData<Current> getCurrentWeather() {
@@ -44,5 +49,25 @@ public class ForecastViewModel extends AndroidViewModel {
 
     public LiveData<List<Hourly>> getHourlyForecast() {
         return hourlyForecast;
+    }
+
+    public LiveData<CurrentLocation> getCurrentLocation() {
+        return currentLocation;
+    }
+
+    public void updateForecast(Location location) {
+        repository.updateForecast(location);
+    }
+
+    public void setCurrentLocation(CurrentLocation currentLocation) {
+        repository.setCurrentLocation(currentLocation);
+    }
+
+    public LiveData<Integer> getSelectedDayData() {
+        return selectedDayData;
+    }
+
+    public void setSelectedDay(Integer selectedDay) {
+        this.selectedDayData.setValue(selectedDay);
     }
 }

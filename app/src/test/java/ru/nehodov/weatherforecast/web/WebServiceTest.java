@@ -7,6 +7,8 @@ import java.io.IOException;
 import retrofit2.Call;
 import retrofit2.Response;
 import ru.nehodov.weatherforecast.entities.Forecast;
+import ru.nehodov.weatherforecast.network.OpenWeatherApi;
+import ru.nehodov.weatherforecast.network.WebService;
 
 public class WebServiceTest {
 

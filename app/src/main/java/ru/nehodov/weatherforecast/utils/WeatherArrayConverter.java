@@ -1,4 +1,4 @@
-package ru.nehodov.weatherforecast;
+package ru.nehodov.weatherforecast.utils;
 
 import androidx.room.TypeConverter;
 

@@ -1,4 +1,4 @@
-package ru.nehodov.weatherforecast.web;
+package ru.nehodov.weatherforecast.network;
 
 import retrofit2.Call;
 import retrofit2.http.GET;
@@ -7,7 +7,8 @@ import ru.nehodov.weatherforecast.entities.Forecast;
 
 public interface OpenWeatherApi {
 
-    @GET("data/2.5/onecall?exclude=minutely&units=metric&lang=ru")
+//    @GET("data/2.5/onecall?exclude=minutely&units=metric&lang=ru")
+    @GET("data/2.5/onecall?exclude=minutely&units=metric")
     Call<Forecast> getForecast(@Query("lat") String latitude,
                                @Query("lon") String longitude,
                                @Query("appid") String apiKey);

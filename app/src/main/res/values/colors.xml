@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#6200EE</color>
-    <color name="colorPrimaryDark">#3700B3</color>
     <color name="colorAccent">#03DAC5</color>
     <color name="black">#000000</color>
     <color name="white">#FFFFFF</color>
+    <color name="transparent_white">#32FFFFFF</color>
+    <color name="details_background">#6B9FCE</color>
+    <color name="daily_forecast_background">#073143</color>
+    <color name="divider_color">@android:color/darker_gray</color>
 </resources>

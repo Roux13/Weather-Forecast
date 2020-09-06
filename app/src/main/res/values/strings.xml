@@ -1,3 +1,23 @@
 <resources>
     <string name="app_name">WeatherForecast</string>
+    <string name="permission_rationale">Location permission needed for core functionality</string>
+    <string name="weather_icon">Weather icon</string>
+    <string name="today">Today</string>
+    <string name="settings">Settings</string>
+    <!-- Preference Titles -->
+
+    <!-- Messages Preferences -->
+
+    <!-- Sync Preferences -->
+    <string name="update_period">Update period, min</string>
+    <string name="edit_text_period_preferences_key">edit_text_period</string>
+    <string name="switch_enable_update_preferences_key">switch_enable_update</string>
+    <string name="enable_forecast_update">Enable forecast update</string>
+    <string name="updating_location">Updating location…</string>
+    <string name="humidity_pattern">Humidity: %s%%</string>
+    <string name="time_update_pattern">(%s)</string>
+    <string name="pressure_pattern">Pressure: %s mbar</string>
+    <string name="uvi_pattern">UVI: %s</string>
+    <string name="wind_wpeed_pattern">Wind speed: %s m/sec</string>
+    <string name="feels_like_pattern">Feels like: %s</string>
 </resources>
