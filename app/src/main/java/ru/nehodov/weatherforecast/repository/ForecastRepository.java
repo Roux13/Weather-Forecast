@@ -1,7 +1,5 @@
 package ru.nehodov.weatherforecast.repository;
 
-import android.app.Application;
-import android.content.Context;
 import android.location.Location;
 import android.util.Log;
 
@@ -10,6 +8,8 @@ import androidx.lifecycle.LiveData;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
+
+import javax.inject.Inject;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -24,51 +24,38 @@ import ru.nehodov.weatherforecast.entities.CurrentLocation;
 import ru.nehodov.weatherforecast.entities.Daily;
 import ru.nehodov.weatherforecast.entities.Forecast;
 import ru.nehodov.weatherforecast.entities.Hourly;
+import ru.nehodov.weatherforecast.network.NetworkContract;
 import ru.nehodov.weatherforecast.network.OpenWeatherApi;
-import ru.nehodov.weatherforecast.network.WebService;
 
 public class ForecastRepository {
 
     private static final String TAG = "Repository";
 
-    private static final String WEATHER_API_KEY = "d9a386e4aee859ca058160aa3647c436";
+    private OpenWeatherApi weatherApi;
+    private CurrentDao currentDao;
+    private DailyDao dailyDao;
+    private HourlyDao hourlyDao;
+    private CurrentLocationDao currentLocationDao;
 
-    private final OpenWeatherApi weatherApi;
-    private final CurrentDao currentDao;
-    private final DailyDao dailyDao;
-    private final HourlyDao hourlyDao;
-    private final CurrentLocationDao currentLocationDao;
-
-    public ForecastRepository(Application application) {
-        this.weatherApi = new WebService().getApi();
-        ForecastDatabase db = ForecastDatabase.getInstance(application);
-        this.currentDao = db.getCurrentDao();
-        this.dailyDao = db.getDailyDao();
-        this.hourlyDao = db.getHourlyDao();
-        this.currentLocationDao = db.getCurrentLocationDao();
-    }
-
-    public ForecastRepository(Context applicationContext) {
-        this.weatherApi = new WebService().getApi();
-        ForecastDatabase db = ForecastDatabase.getInstance(applicationContext);
-        this.currentDao = db.getCurrentDao();
-        this.dailyDao = db.getDailyDao();
-        this.hourlyDao = db.getHourlyDao();
-        this.currentLocationDao = db.getCurrentLocationDao();
+    @Inject
+    public ForecastRepository(OpenWeatherApi weatherApi, CurrentDao currentDao,
+                              DailyDao dailyDao, HourlyDao hourlyDao,
+                              CurrentLocationDao currentLocationDao) {
+        this.weatherApi = weatherApi;
+        this.currentDao = currentDao;
+        this.dailyDao = dailyDao;
+        this.hourlyDao = hourlyDao;
+        this.currentLocationDao = currentLocationDao;
     }
 
     public void updateForecast(final Location location) {
-        Log.d(TAG, String.format("in refreshForecast, Location is %s", location.toString()));
-        Log.d(TAG, String.format("To request latitude: %s, longitude:%s",
-                location.getLatitude(), location.getLongitude()));
         Call<Forecast> call = weatherApi.getForecast(String.valueOf(location.getLatitude()),
-                String.valueOf(location.getLongitude()), WEATHER_API_KEY);
-        Log.d(TAG, call.toString());
+                String.valueOf(location.getLongitude()), NetworkContract.WEATHER_API_KEY);
         call.enqueue(new Callback<Forecast>() {
             @Override
-            public void onResponse(Call<Forecast> call, Response<Forecast> response) {
+            public void onResponse(@NotNull Call<Forecast> call,
+                                   @NotNull Response<Forecast> response) {
                 if (response.isSuccessful()) {
-                    Log.d(TAG, "Request is successful body: " + response.body().toString());
                     ForecastDatabase.DB_EXECUTOR_SERVICE.execute(() -> {
                         currentDao.deleteCurrentWeather();
                         dailyDao.deleteDailyForecast();
@@ -112,10 +99,6 @@ public class ForecastRepository {
 
     public LiveData<CurrentLocation> getCurrentLocation() {
         return currentLocationDao.get();
-    }
-
-    public CurrentLocation getCurrentLocationWithoutLiveData() {
-        return currentLocationDao.getWithouLiveData();
     }
 
     public void setCurrentLocation(CurrentLocation currentLocation) {

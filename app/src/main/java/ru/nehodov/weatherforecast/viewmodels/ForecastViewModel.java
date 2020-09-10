@@ -10,6 +10,9 @@ import androidx.lifecycle.MutableLiveData;
 
 import java.util.List;
 
+import javax.inject.Inject;
+
+import ru.nehodov.weatherforecast.App;
 import ru.nehodov.weatherforecast.entities.Current;
 import ru.nehodov.weatherforecast.entities.CurrentLocation;
 import ru.nehodov.weatherforecast.entities.Daily;
@@ -20,7 +23,8 @@ public class ForecastViewModel extends AndroidViewModel {
 
     private final static Integer TODAY = 0;
 
-    private final ForecastRepository repository;
+    @Inject
+    ForecastRepository repository;
 
     private final LiveData<Current> currentWeather;
     private final LiveData<List<Daily>> dailyForecast;
@@ -31,7 +35,7 @@ public class ForecastViewModel extends AndroidViewModel {
 
     public ForecastViewModel(@NonNull Application application) {
         super(application);
-        repository = new ForecastRepository(application);
+        ((App) application.getApplicationContext()).getAppComponent().inject(this);
         currentWeather = repository.getCurrentWeather();
         dailyForecast = repository.getDailyForecast();
         hourlyForecast = repository.getHourlyForecast();

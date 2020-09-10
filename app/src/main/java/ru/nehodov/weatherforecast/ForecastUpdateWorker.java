@@ -6,13 +6,12 @@ import android.location.Location;
 import android.location.LocationManager;
 import android.util.Log;
 
-import androidx.activity.result.ActivityResultLauncher;
 import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
 import androidx.work.Worker;
 import androidx.work.WorkerParameters;
 
-import com.google.android.gms.location.FusedLocationProviderClient;
+import javax.inject.Inject;
 
 import ru.nehodov.weatherforecast.repository.ForecastRepository;
 
@@ -23,18 +22,16 @@ public class ForecastUpdateWorker extends Worker {
 
     private static final String TAG = "ForecastUpdateWorker";
 
-    private ActivityResultLauncher<String> resultLauncher;
-
-    private FusedLocationProviderClient fusedLocationProviderClient;
-
-    private final ForecastRepository repository;
+    @Inject
+    ForecastRepository repository;
 
     private Location currentLocation;
 
     public ForecastUpdateWorker(@NonNull Context context,
                                 @NonNull WorkerParameters workerParams) {
         super(context, workerParams);
-        repository = new ForecastRepository(getApplicationContext());
+        ((App) getApplicationContext()).getAppComponent().inject(this);
+//        repository = new ForecastRepository(getApplicationContext());
     }
 
     @NonNull
@@ -70,22 +67,6 @@ public class ForecastUpdateWorker extends Worker {
         if (isProviderEnabled && isFineLocationGranted && isBackgroundLocationGranted) {
             currentLocation = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
         }
-//        CurrentLocation currentLocation = repository.getCurrentLocationWithoutLiveData();
-//        if (currentLocation != null) {
-//            Geocoder geocoder = new Geocoder(getApplicationContext(), Locale.getDefault());
-//            try {
-//                String locationName = geocoder.getFromLocation(
-//                        currentLocation.getLatitude(),
-//                        currentLocation.getLongitude(), 1)
-//                        .get(0)
-//                        .getAddressLine(0);
-//                this.currentLocation = new Location(locationName);
-//                this.currentLocation.setLatitude(currentLocation.getLatitude());
-//                this.currentLocation.setLongitude(currentLocation.getLongitude());
-//            } catch (IOException e) {
-//                e.printStackTrace();
-//            }
-//        }
         Log.d(TAG, "Last location is " + currentLocation);
     }
 }

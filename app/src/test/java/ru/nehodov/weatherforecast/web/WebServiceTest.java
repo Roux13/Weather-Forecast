@@ -16,6 +16,7 @@ public class WebServiceTest {
     private final static String LONGITUDE = "-94.037689";
     private final static String API_KEY = "d9a386e4aee859ca058160aa3647c436";
 
+
     @Test
     public void apiConnectionTest() {
         StringBuilder stringBuilder = new StringBuilder();

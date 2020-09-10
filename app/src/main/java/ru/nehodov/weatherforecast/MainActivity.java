@@ -49,11 +49,11 @@ public class MainActivity extends AppCompatActivity {
 
     private static final String REFRESH_REQUEST_TAG = "periodic_work_refresh_request";
 
+    private ForecastViewModel viewModel;
+
     private ActivityResultLauncher<String> requestPermissionLauncher;
 
     private FusedLocationProviderClient fusedLocationProviderClient;
-
-    private ForecastViewModel viewModel;
 
     private LocationCallback locationCallback;
 
@@ -87,14 +87,12 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void init() {
-        Log.d(TAG, "init");
         viewModel = new ViewModelProvider(this).get(ForecastViewModel.class);
         Toolbar toolbar = findViewById(R.id.mainToolbar);
         toolbar.inflateMenu(R.menu.main_menu);
         toolbar.setOnMenuItemClickListener(this::onOptionsItemSelected);
         viewModel.getCurrentLocation().observe(this, currentLocation -> {
             if (currentLocation != null) {
-                Log.d(TAG, "current location: " + currentLocation.toString());
                 Geocoder geocoder = new Geocoder(this, Locale.getDefault());
                 try {
                     double latitude = currentLocation.getLatitude();
@@ -113,11 +111,9 @@ public class MainActivity extends AppCompatActivity {
             }
         });
         WorkManager.getInstance(this).cancelAllWork();
-        Log.d(TAG, "All works are canceled");
     }
 
     private void requestCurrentLocation() {
-        Log.d(TAG, "requestCurrentLocation");
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
                 == PERMISSION_DENIED) {
             requestPermissionLauncher.launch(Manifest.permission.ACCESS_FINE_LOCATION);
@@ -158,16 +154,12 @@ public class MainActivity extends AppCompatActivity {
         return new LocationCallback() {
             @Override
             public void onLocationResult(LocationResult locationResult) {
-                Log.d(TAG, "In LocationCallback");
                 if (locationResult == null) {
-                    Log.d(TAG, "location result is null");
                     showAlertMessageNoGps();
                     return;
                 }
                 if (viewModel != null) {
                     viewModel.updateForecast(locationResult.getLocations().get(0));
-                    Log.d(TAG, "location result != null. Location is "
-                            + locationResult.getLocations().get(0).toString());
                 }
             }
 
@@ -191,7 +183,6 @@ public class MainActivity extends AppCompatActivity {
                 ExistingPeriodicWorkPolicy.KEEP,
                 workRequest
         );
-        Log.d(TAG, "Work is enqueued");
     }
 
     @Override
@@ -228,7 +219,6 @@ public class MainActivity extends AppCompatActivity {
             runUpdateWorker();
         } else {
             WorkManager.getInstance(this).cancelAllWork();
-            Log.d(TAG, "All works are canceled");
         }
     }
 
