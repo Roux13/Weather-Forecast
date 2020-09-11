@@ -7,5 +7,5 @@ Fragments manage with Android Architecture Component. DB with Room. Network with
 ![Image2 of WeatherForecast](/images/Settings.png)  
 
 ## Contacts
- Skype: roux13333
+ Skype: roux13333  
  e-mail: u.nehodov@gmail.com
