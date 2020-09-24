@@ -27,8 +27,8 @@ public abstract class ForecastDatabase extends RoomDatabase {
 
     private static ForecastDatabase instance;
 
-    public static final ExecutorService DB_EXECUTOR_SERVICE =
-            Executors.newFixedThreadPool(NUMBER_OF_THREADS);
+    public static final ExecutorService DB_EXECUTOR_SERVICE;
+
 
     public abstract CurrentDao getCurrentDao();
 
@@ -37,6 +37,10 @@ public abstract class ForecastDatabase extends RoomDatabase {
     public abstract HourlyDao getHourlyDao();
 
     public abstract CurrentLocationDao getCurrentLocationDao();
+
+    static {
+        DB_EXECUTOR_SERVICE = Executors.newFixedThreadPool(NUMBER_OF_THREADS);
+    }
 
     public static ForecastDatabase getInstance(final Context applicationContext) {
         if (instance == null) {

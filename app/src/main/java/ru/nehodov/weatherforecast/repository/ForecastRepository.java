@@ -1,6 +1,7 @@
 package ru.nehodov.weatherforecast.repository;
 
 import android.location.Location;
+import android.os.Process;
 import android.util.Log;
 
 import androidx.lifecycle.LiveData;
@@ -57,6 +58,7 @@ public class ForecastRepository {
                                    @NotNull Response<Forecast> response) {
                 if (response.isSuccessful()) {
                     ForecastDatabase.DB_EXECUTOR_SERVICE.execute(() -> {
+                        Process.setThreadPriority(Process.THREAD_PRIORITY_BACKGROUND);
                         currentDao.deleteCurrentWeather();
                         dailyDao.deleteDailyForecast();
                         hourlyDao.deleteHourlyForecast();
@@ -103,7 +105,10 @@ public class ForecastRepository {
 
     public void setCurrentLocation(CurrentLocation currentLocation) {
         ForecastDatabase.DB_EXECUTOR_SERVICE.execute(
-                () -> currentLocationDao.insert(currentLocation));
+                () -> {
+                    Process.setThreadPriority(Process.THREAD_PRIORITY_BACKGROUND);
+                    currentLocationDao.insert(currentLocation);
+                });
     }
 }
 

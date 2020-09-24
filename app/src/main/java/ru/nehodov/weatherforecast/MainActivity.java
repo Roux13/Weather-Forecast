@@ -57,6 +57,8 @@ public class MainActivity extends AppCompatActivity {
 
     private LocationCallback locationCallback;
 
+    private Toolbar toolbar;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -66,7 +68,9 @@ public class MainActivity extends AppCompatActivity {
                     if (isGranted) {
                         init();
                     } else {
-                        showAlertMessageNoGps();
+                        if (isLocationDisabled()) {
+                            showAlertMessageNoGps();
+                        }
                         Snackbar.make(
                                 findViewById(R.id.mainActivity),
                                 R.string.permission_rationale,
@@ -88,9 +92,7 @@ public class MainActivity extends AppCompatActivity {
 
     public void init() {
         viewModel = new ViewModelProvider(this).get(ForecastViewModel.class);
-        Toolbar toolbar = findViewById(R.id.mainToolbar);
-        toolbar.inflateMenu(R.menu.main_menu);
-        toolbar.setOnMenuItemClickListener(this::onOptionsItemSelected);
+        setupToolbar();
         viewModel.getCurrentLocation().observe(this, currentLocation -> {
             if (currentLocation != null) {
                 Geocoder geocoder = new Geocoder(this, Locale.getDefault());
@@ -111,6 +113,12 @@ public class MainActivity extends AppCompatActivity {
             }
         });
         WorkManager.getInstance(this).cancelAllWork();
+    }
+
+    private void setupToolbar() {
+        toolbar = findViewById(R.id.mainToolbar);
+        toolbar.inflateMenu(R.menu.main_menu);
+        toolbar.setOnMenuItemClickListener(this::onOptionsItemSelected);
     }
 
     private void requestCurrentLocation() {
@@ -192,11 +200,7 @@ public class MainActivity extends AppCompatActivity {
         final LocationManager locationManager =
                 (LocationManager) getSystemService(LOCATION_SERVICE);
         if (!locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
-                if (!locationManager.isLocationEnabled()) {
-                    showAlertMessageNoGps();
-                }
-            } else {
+            if (isLocationDisabled()) {
                 showAlertMessageNoGps();
             }
         } else {
@@ -248,5 +252,13 @@ public class MainActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         startActivity(new Intent(this, SettingsActivity.class));
         return true;
+    }
+
+    private boolean isLocationDisabled() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+            return !((LocationManager) getSystemService(LOCATION_SERVICE)).isLocationEnabled();
+        } else {
+            return true;
+        }
     }
 }
