@@ -9,7 +9,7 @@ import ru.nehodov.weatherforecast.di.modules.AppModule;
 
 public class App extends Application {
 
-    AppComponent appComponent;
+    private AppComponent appComponent;
 
     @Override
     public void onCreate() {
@@ -22,4 +22,5 @@ public class App extends Application {
     public AppComponent getAppComponent() {
         return appComponent;
     }
+    
 }

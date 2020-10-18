@@ -18,6 +18,7 @@
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
             app:titleTextColor="@color/white"
+            app:title="@string/updating_location"
             tools:title="Погода в Москве сейчас" />
 
     </com.google.android.material.appbar.AppBarLayout>

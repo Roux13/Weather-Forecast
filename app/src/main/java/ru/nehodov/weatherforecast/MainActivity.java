@@ -63,11 +63,16 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main_activity);
+        setupToolbar();
+        WorkManager.getInstance(this).cancelAllWork();
+        requestPermissions();
+        init();
+    }
+
+    private void requestPermissions() {
         requestPermissionLauncher = registerForActivityResult(
                 new ActivityResultContracts.RequestPermission(), isGranted -> {
-                    if (isGranted) {
-                        init();
-                    } else {
+                    if (!isGranted) {
                         if (isLocationDisabled()) {
                             showAlertMessageNoGps();
                         }
@@ -85,14 +90,12 @@ public class MainActivity extends AppCompatActivity {
                     this, Manifest.permission.ACCESS_BACKGROUND_LOCATION) == PERMISSION_DENIED) {
                 requestPermissionLauncher.launch(Manifest.permission.ACCESS_BACKGROUND_LOCATION);
             }
-        } else {
-            init();
+            requestPermissions();
         }
     }
 
-    public void init() {
+    private void init() {
         viewModel = new ViewModelProvider(this).get(ForecastViewModel.class);
-        setupToolbar();
         viewModel.getCurrentLocation().observe(this, currentLocation -> {
             if (currentLocation != null) {
                 Geocoder geocoder = new Geocoder(this, Locale.getDefault());
@@ -104,21 +107,12 @@ public class MainActivity extends AppCompatActivity {
                                 .get(0)
                                 .getAddressLine(0);
                         toolbar.setTitle(locationName);
-                    } else {
-                        toolbar.setTitle(R.string.updating_location);
                     }
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
             }
         });
-        WorkManager.getInstance(this).cancelAllWork();
-    }
-
-    private void setupToolbar() {
-        toolbar = findViewById(R.id.mainToolbar);
-        toolbar.inflateMenu(R.menu.main_menu);
-        toolbar.setOnMenuItemClickListener(this::onOptionsItemSelected);
     }
 
     private void requestCurrentLocation() {
@@ -260,5 +254,11 @@ public class MainActivity extends AppCompatActivity {
         } else {
             return true;
         }
+    }
+
+    private void setupToolbar() {
+        toolbar = findViewById(R.id.mainToolbar);
+        toolbar.inflateMenu(R.menu.main_menu);
+        toolbar.setOnMenuItemClickListener(this::onOptionsItemSelected);
     }
 }

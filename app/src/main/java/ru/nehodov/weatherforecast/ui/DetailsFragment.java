@@ -37,18 +37,13 @@ public class DetailsFragment extends Fragment {
     private TextView uvi;
     private TextView windSpeed;
 
-    public static DetailsFragment newInstance() {
-        DetailsFragment fragment = new DetailsFragment();
-        return fragment;
-    }
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_details, container, false);
         viewModel = new ViewModelProvider(requireActivity()).get(ForecastViewModel.class);
-        updateTimeTv = view.findViewById(R.id.updatedTimeTV);
         dateTV = view.findViewById(R.id.detailsDateTV);
+        updateTimeTv = view.findViewById(R.id.updateTimeTV);
         detailsIcon = view.findViewById(R.id.detailsIcon);
         detailsTempTV = view.findViewById(R.id.detailsTempTV);
         descriptionTV = view.findViewById(R.id.weatherDescriptionTV);
@@ -125,7 +120,6 @@ public class DetailsFragment extends Fragment {
                                 dailies.get(selectedDay).getWeather()[0].getIcon()))
                         .resize(300, 300)
                         .into(detailsIcon);
-
             }
         });
     }
