@@ -49,7 +49,7 @@ public class WeatherUtilTest {
     @Test
     public void formatTemperatureWhenWrongInputThenNaN() {
         String tempBefore = "A";
-        String expected = "NaN";
+        String expected = "";
 
         assertEquals(expected, WeatherUtil.formatTemp(tempBefore));
     }
@@ -57,7 +57,23 @@ public class WeatherUtilTest {
     @Test
     public void formatTemperatureWhenDoubleMinusThenNaN() {
         String tempBefore = "--5";
-        String expected = "NaN";
+        String expected = "";
+
+        assertEquals(expected, WeatherUtil.formatTemp(tempBefore));
+    }
+
+    @Test
+    public void formatTempWhenArgIsNull() {
+        String tempBefore = null;
+        String expected = "";
+
+        assertEquals(expected, WeatherUtil.formatTemp(tempBefore));
+    }
+
+    @Test
+    public void formatTempWhenArgIsEmptyLine() {
+        String tempBefore = "";
+        String expected = "";
 
         assertEquals(expected, WeatherUtil.formatTemp(tempBefore));
     }
@@ -85,5 +101,29 @@ public class WeatherUtilTest {
         String expected = "03 09 Thu";
 
         assertEquals(expected, WeatherUtil.formatDate(date));
+    }
+
+    @Test
+    public void formatDateWhenArgIsNull() {
+        String unixTime = null;
+        String expected = "";
+
+        assertEquals(expected, WeatherUtil.formatDate(unixTime));
+    }
+
+    @Test
+    public void formatDateWhenArgHasLetter() {
+        String unixTime = "12h12";
+        String expected = "";
+
+        assertEquals(expected, WeatherUtil.formatDate(unixTime));
+    }
+
+    @Test
+    public void formatDateWhenArgIsEmptyLine() {
+        String unixTime = "";
+        String expected = "";
+
+        assertEquals(expected, WeatherUtil.formatDate(unixTime));
     }
 }
