@@ -1,13 +1,20 @@
 package ru.nehodov.weatherforecast;
 
+import android.Manifest;
+import android.content.Intent;
+import android.location.Geocoder;
+import android.location.LocationManager;
+import android.os.Build;
+import android.os.Bundle;
+import android.os.Looper;
+import android.util.Log;
+import android.view.MenuItem;
+
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
 import androidx.core.content.ContextCompat;
-import androidx.core.text.TextUtilsCompat;
 import androidx.databinding.DataBindingUtil;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.preference.PreferenceManager;
@@ -16,17 +23,6 @@ import androidx.work.ExistingPeriodicWorkPolicy;
 import androidx.work.NetworkType;
 import androidx.work.PeriodicWorkRequest;
 import androidx.work.WorkManager;
-
-import android.Manifest;
-import android.content.Intent;
-import android.location.Geocoder;
-import android.location.LocationManager;
-import android.os.Build;
-import android.os.Bundle;
-import android.os.Looper;
-import android.text.TextUtils;
-import android.util.Log;
-import android.view.MenuItem;
 
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationCallback;
@@ -45,7 +41,7 @@ import ru.nehodov.weatherforecast.settings.SettingsActivity;
 import ru.nehodov.weatherforecast.viewmodels.ForecastViewModel;
 
 import static android.content.pm.PackageManager.PERMISSION_DENIED;
-import static android.provider.Settings.*;
+import static android.provider.Settings.ACTION_LOCATION_SOURCE_SETTINGS;
 
 public class MainActivity extends AppCompatActivity {
 

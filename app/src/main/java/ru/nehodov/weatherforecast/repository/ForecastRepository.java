@@ -21,7 +21,6 @@ import ru.nehodov.weatherforecast.dao.DailyDao;
 import ru.nehodov.weatherforecast.dao.HourlyDao;
 import ru.nehodov.weatherforecast.dao.UpdateTimeDao;
 import ru.nehodov.weatherforecast.database.ForecastDatabase;
-import ru.nehodov.weatherforecast.entities.Current;
 import ru.nehodov.weatherforecast.entities.CurrentLocation;
 import ru.nehodov.weatherforecast.entities.Daily;
 import ru.nehodov.weatherforecast.entities.Forecast;
@@ -35,12 +34,12 @@ public class ForecastRepository {
 
     private static final String TAG = "Repository";
 
-    private OpenWeatherApi weatherApi;
-    private CurrentDao currentDao;
-    private DailyDao dailyDao;
-    private HourlyDao hourlyDao;
-    private CurrentLocationDao currentLocationDao;
-    private UpdateTimeDao updateTimeDao;
+    private final OpenWeatherApi weatherApi;
+    private final CurrentDao currentDao;
+    private final DailyDao dailyDao;
+    private final HourlyDao hourlyDao;
+    private final CurrentLocationDao currentLocationDao;
+    private final UpdateTimeDao updateTimeDao;
 
     @Inject
     public ForecastRepository(OpenWeatherApi weatherApi, CurrentDao currentDao,

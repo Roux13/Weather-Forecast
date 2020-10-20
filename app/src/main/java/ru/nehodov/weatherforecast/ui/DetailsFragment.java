@@ -17,8 +17,6 @@ public class DetailsFragment extends Fragment {
 
     private static final String TAG = "DetailsFragment";
 
-    private ForecastViewModel viewModel;
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -26,7 +24,7 @@ public class DetailsFragment extends Fragment {
                         R.layout.fragment_details,
                         container,
                         false);
-        viewModel = new ViewModelProvider(requireActivity()).get(ForecastViewModel.class);
+        ForecastViewModel viewModel = new ViewModelProvider(requireActivity()).get(ForecastViewModel.class);
         binding.setViewmodel(viewModel);
         binding.setLifecycleOwner(requireActivity());
         return binding.getRoot();

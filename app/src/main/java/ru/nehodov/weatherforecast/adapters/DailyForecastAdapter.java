@@ -59,7 +59,7 @@ public class DailyForecastAdapter extends
 
     public static class DailyForecastHolder extends RecyclerView.ViewHolder {
 
-        private DailyItemBinding binding;
+        private final DailyItemBinding binding;
 
         public DailyForecastHolder(DailyItemBinding binding) {
             super(binding.getRoot());

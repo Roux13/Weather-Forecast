@@ -5,7 +5,6 @@ import androidx.room.Dao;
 import androidx.room.Insert;
 import androidx.room.Query;
 
-import ru.nehodov.weatherforecast.entities.Current;
 import ru.nehodov.weatherforecast.entities.Daily;
 
 @Dao
