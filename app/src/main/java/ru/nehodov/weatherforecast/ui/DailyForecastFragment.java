@@ -30,11 +30,6 @@ public class DailyForecastFragment extends Fragment
     private DailyDiffUtilCallback diffUtilCallback;
     private DiffUtil.DiffResult diffResult;
 
-    public static DailyForecastFragment newInstance() {
-        DailyForecastFragment fragment = new DailyForecastFragment();
-        return fragment;
-    }
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {

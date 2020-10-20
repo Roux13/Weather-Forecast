@@ -1,69 +1,82 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:tools="http://schemas.android.com/tools">
 
-    android:id="@+id/mainActivity"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    <data>
+        <import type="android.text.TextUtils"/>
 
-    <com.google.android.material.appbar.AppBarLayout
+        <variable
+            name="viewmodel"
+            type="ru.nehodov.weatherforecast.viewmodels.ForecastViewModel" />
 
-        android:layout_width="match_parent"
-        android:layout_height="?attr/actionBarSize"
-        android:backgroundTint="@color/details_background">
+    </data>
 
-        <androidx.appcompat.widget.Toolbar
-            android:id="@+id/mainToolbar"
-            android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize"
-            app:titleTextColor="@color/white"
-            app:title="@string/updating_location"
-            tools:title="Погода в Москве сейчас" />
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
 
-    </com.google.android.material.appbar.AppBarLayout>
-
-    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/mainActivity"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
+        <com.google.android.material.appbar.AppBarLayout
 
-        <FrameLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            app:layout_constraintBottom_toTopOf="@id/dailyContainer"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHeight_percent="0.5"
-            app:layout_constraintStart_toStartOf="parent">
-
-            <fragment
-                android:id="@+id/detailsNavHost"
-                android:name="androidx.navigation.fragment.NavHostFragment"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                app:defaultNavHost="false"
-                app:navGraph="@navigation/details_nav_graph" />
-        </FrameLayout>
-
-        <FrameLayout
-            android:id="@+id/dailyContainer"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            app:layout_constraintHeight_percent="0.5"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
+            android:layout_height="?attr/actionBarSize"
             android:backgroundTint="@color/details_background">
 
-            <fragment
-                android:id="@+id/navHost"
-                android:name="androidx.navigation.fragment.NavHostFragment"
+            <androidx.appcompat.widget.Toolbar
+                android:id="@+id/mainToolbar"
+                android:layout_width="match_parent"
+                android:layout_height="?attr/actionBarSize"
+                app:title="@{TextUtils.isEmpty(viewmodel.locationTitle) ? @string/updating_location : viewmodel.locationTitle}"
+                app:menu="@menu/main_menu"
+                app:titleTextColor="@color/white"
+                tools:title="Погода в Москве сейчас" />
+
+        </com.google.android.material.appbar.AppBarLayout>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+
+            <FrameLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                app:defaultNavHost="false"
-                app:navGraph="@navigation/daily_nav_graph" />
-        </FrameLayout>
+                app:layout_constraintBottom_toTopOf="@id/dailyContainer"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHeight_percent="0.5"
+                app:layout_constraintStart_toStartOf="parent">
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+                <fragment
+                    android:id="@+id/detailsNavHost"
+                    android:name="androidx.navigation.fragment.NavHostFragment"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    app:defaultNavHost="false"
+                    app:navGraph="@navigation/details_nav_graph" />
+            </FrameLayout>
 
-</androidx.coordinatorlayout.widget.CoordinatorLayout>
+            <FrameLayout
+                android:id="@+id/dailyContainer"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:backgroundTint="@color/details_background"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHeight_percent="0.5"
+                app:layout_constraintStart_toStartOf="parent">
+
+                <fragment
+                    android:id="@+id/navHost"
+                    android:name="androidx.navigation.fragment.NavHostFragment"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    app:defaultNavHost="false"
+                    app:navGraph="@navigation/daily_nav_graph" />
+            </FrameLayout>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
+</layout>

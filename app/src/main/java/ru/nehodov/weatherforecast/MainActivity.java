@@ -7,6 +7,8 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.content.ContextCompat;
+import androidx.core.text.TextUtilsCompat;
+import androidx.databinding.DataBindingUtil;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.preference.PreferenceManager;
 import androidx.work.Constraints;
@@ -22,6 +24,7 @@ import android.location.LocationManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Looper;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.MenuItem;
 
@@ -37,6 +40,7 @@ import java.io.IOException;
 import java.util.Locale;
 import java.util.concurrent.TimeUnit;
 
+import ru.nehodov.weatherforecast.databinding.MainActivityBinding;
 import ru.nehodov.weatherforecast.settings.SettingsActivity;
 import ru.nehodov.weatherforecast.viewmodels.ForecastViewModel;
 
@@ -57,13 +61,14 @@ public class MainActivity extends AppCompatActivity {
 
     private LocationCallback locationCallback;
 
-    private Toolbar toolbar;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.main_activity);
-        setupToolbar();
+        viewModel = new ViewModelProvider(this).get(ForecastViewModel.class);
+        MainActivityBinding binding =
+                DataBindingUtil.setContentView(this, R.layout.main_activity);
+        binding.setViewmodel(viewModel);
+        binding.setLifecycleOwner(this);
         WorkManager.getInstance(this).cancelAllWork();
         requestPermissions();
         init();
@@ -95,22 +100,29 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void init() {
-        viewModel = new ViewModelProvider(this).get(ForecastViewModel.class);
         viewModel.getCurrentLocation().observe(this, currentLocation -> {
             if (currentLocation != null) {
+                Log.d(TAG, String.format(
+                        "Current location is not null, latitude: %f, longitude: %f",
+                        currentLocation.getLatitude(), currentLocation.getLongitude()));
                 Geocoder geocoder = new Geocoder(this, Locale.getDefault());
                 try {
-                    double latitude = currentLocation.getLatitude();
-                    double longitude = currentLocation.getLongitude();
+                    double latitude = currentLocation.getLatitude()
+                            == 0.0 ? 1.0 : currentLocation.getLatitude();
+                    double longitude = currentLocation.getLongitude()
+                            == 0.0 ? 1.0 : currentLocation.getLongitude();
                     if (!geocoder.getFromLocation(latitude, longitude, 1).isEmpty()) {
                         String locationName = geocoder.getFromLocation(latitude, longitude, 1)
                                 .get(0)
                                 .getAddressLine(0);
-                        toolbar.setTitle(locationName);
+                        Log.d(TAG, locationName);
+                        viewModel.setLocationTitle(locationName);
                     }
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
+            } else {
+                Log.d(TAG, "CurrentLocation is null");
             }
         });
     }
@@ -242,12 +254,6 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    @Override
-    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        startActivity(new Intent(this, SettingsActivity.class));
-        return true;
-    }
-
     private boolean isLocationDisabled() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
             return !((LocationManager) getSystemService(LOCATION_SERVICE)).isLocationEnabled();
@@ -256,9 +262,8 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    private void setupToolbar() {
-        toolbar = findViewById(R.id.mainToolbar);
-        toolbar.inflateMenu(R.menu.main_menu);
-        toolbar.setOnMenuItemClickListener(this::onOptionsItemSelected);
+    public void onSettingsClick(MenuItem item) {
+        startActivity(new Intent(this, SettingsActivity.class));
     }
+
 }
