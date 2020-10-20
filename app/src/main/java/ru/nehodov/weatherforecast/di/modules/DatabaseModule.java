@@ -10,6 +10,7 @@ import ru.nehodov.weatherforecast.dao.CurrentDao;
 import ru.nehodov.weatherforecast.dao.CurrentLocationDao;
 import ru.nehodov.weatherforecast.dao.DailyDao;
 import ru.nehodov.weatherforecast.dao.HourlyDao;
+import ru.nehodov.weatherforecast.dao.UpdateTimeDao;
 import ru.nehodov.weatherforecast.database.ForecastDatabase;
 
 @Module
@@ -49,5 +50,11 @@ public class DatabaseModule {
     @Provides
     CurrentLocationDao provideCurrentLocationDao(ForecastDatabase forecastDatabase) {
         return forecastDatabase.getCurrentLocationDao();
+    }
+
+    @Singleton
+    @Provides
+    UpdateTimeDao provideUpdateTiemDao(ForecastDatabase forecastDatabase) {
+        return forecastDatabase.getUpdateTimeDao();
     }
 }

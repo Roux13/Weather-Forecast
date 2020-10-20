@@ -11,6 +11,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.Arrays;
 import java.util.Objects;
+import java.util.StringJoiner;
 
 import ru.nehodov.weatherforecast.utils.WeatherArrayConverter;
 
@@ -26,6 +27,10 @@ public class Daily {
     @Embedded
     private Temp temp;
 
+    @Embedded
+    @SerializedName("feels_like")
+    private FeelsLike feelsLike;
+
     private String uvi;
 
     private String pressure;
@@ -34,8 +39,6 @@ public class Daily {
 
     @SerializedName("dt")
     private String dateTime;
-
-    private String pop;
 
     private String sunset;
     @TypeConverters(WeatherArrayConverter.class)
@@ -47,18 +50,18 @@ public class Daily {
     private String windSpeed;
 
     @SuppressWarnings("checkstyle:ParameterNumber")
-    public Daily(long id, String sunrise, Temp temp,
+    public Daily(long id, String sunrise, Temp temp, FeelsLike feelsLike,
                  String uvi, String pressure, String clouds,
-                 String dateTime, String pop, String sunset, Weather[] weather,
+                 String dateTime, String sunset, Weather[] weather,
                  String humidity, String windSpeed) {
         this.id = id;
         this.sunrise = sunrise;
         this.temp = temp;
+        this.feelsLike = feelsLike;
         this.uvi = uvi;
         this.pressure = pressure;
         this.clouds = clouds;
         this.dateTime = dateTime;
-        this.pop = pop;
         this.sunset = sunset;
         this.weather = weather;
         this.humidity = humidity;
@@ -87,6 +90,14 @@ public class Daily {
 
     public void setTemp(Temp temp) {
         this.temp = temp;
+    }
+
+    public FeelsLike getFeelsLike() {
+        return feelsLike;
+    }
+
+    public void setFeelsLike(FeelsLike feelsLike) {
+        this.feelsLike = feelsLike;
     }
 
     public String getUvi() {
@@ -121,14 +132,6 @@ public class Daily {
         this.dateTime = dateTime;
     }
 
-    public String getPop() {
-        return pop;
-    }
-
-    public void setPop(String pop) {
-        this.pop = pop;
-    }
-
     public String getSunset() {
         return sunset;
     }
@@ -161,24 +164,6 @@ public class Daily {
         this.windSpeed = windSpeed;
     }
 
-    @NotNull
-    @Override
-    public String toString() {
-        return "Daily{"
-                + "sunrise='" + sunrise + '\''
-                + ", temp=" + temp
-                + ", uvi='" + uvi + '\''
-                + ", pressure='" + pressure + '\''
-                + ", clouds='" + clouds + '\''
-                + ", dt='" + dateTime + '\''
-                + ", pop='" + pop + '\''
-                + ", sunset='" + sunset + '\''
-                + ", weather=" + Arrays.toString(weather)
-                + ", humidity='" + humidity + '\''
-                + ", windSpeed='" + windSpeed + '\''
-                + '}';
-    }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) {
@@ -188,13 +173,13 @@ public class Daily {
             return false;
         }
         Daily daily = (Daily) o;
-        return  Objects.equals(sunrise, daily.sunrise)
+        return id == daily.id && Objects.equals(sunrise, daily.sunrise)
                 && Objects.equals(temp, daily.temp)
+                && Objects.equals(feelsLike, daily.feelsLike)
                 && Objects.equals(uvi, daily.uvi)
                 && Objects.equals(pressure, daily.pressure)
                 && Objects.equals(clouds, daily.clouds)
                 && Objects.equals(dateTime, daily.dateTime)
-                && Objects.equals(pop, daily.pop)
                 && Objects.equals(sunset, daily.sunset)
                 && Arrays.equals(weather, daily.weather)
                 && Objects.equals(humidity, daily.humidity)
@@ -203,9 +188,29 @@ public class Daily {
 
     @Override
     public int hashCode() {
-        int result = Objects.hash(id, sunrise, temp, uvi, pressure,
-                clouds, dateTime, pop, sunset, humidity, windSpeed);
+        int result = Objects.hash(
+                id, sunrise, temp, feelsLike,
+                uvi, pressure, clouds, dateTime,
+                sunset, humidity, windSpeed);
         result = 31 * result + Arrays.hashCode(weather);
         return result;
+    }
+
+    @Override
+    public String toString() {
+        return new StringJoiner(", ", Daily.class.getSimpleName() + "[", "]")
+                .add("id=" + id)
+                .add("sunrise='" + sunrise + "'")
+                .add("temp=" + temp)
+                .add("feelsLike=" + feelsLike)
+                .add("uvi='" + uvi + "'")
+                .add("pressure='" + pressure + "'")
+                .add("clouds='" + clouds + "'")
+                .add("dateTime='" + dateTime + "'")
+                .add("sunset='" + sunset + "'")
+                .add("weather=" + Arrays.toString(weather))
+                .add("humidity='" + humidity + "'")
+                .add("windSpeed='" + windSpeed + "'")
+                .toString();
     }
 }

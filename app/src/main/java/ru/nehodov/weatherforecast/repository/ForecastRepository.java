@@ -19,14 +19,17 @@ import ru.nehodov.weatherforecast.dao.CurrentDao;
 import ru.nehodov.weatherforecast.dao.CurrentLocationDao;
 import ru.nehodov.weatherforecast.dao.DailyDao;
 import ru.nehodov.weatherforecast.dao.HourlyDao;
+import ru.nehodov.weatherforecast.dao.UpdateTimeDao;
 import ru.nehodov.weatherforecast.database.ForecastDatabase;
 import ru.nehodov.weatherforecast.entities.Current;
 import ru.nehodov.weatherforecast.entities.CurrentLocation;
 import ru.nehodov.weatherforecast.entities.Daily;
 import ru.nehodov.weatherforecast.entities.Forecast;
 import ru.nehodov.weatherforecast.entities.Hourly;
+import ru.nehodov.weatherforecast.entities.UpdateTime;
 import ru.nehodov.weatherforecast.network.NetworkContract;
 import ru.nehodov.weatherforecast.network.OpenWeatherApi;
+import ru.nehodov.weatherforecast.utils.CurrentToDailyConverter;
 
 public class ForecastRepository {
 
@@ -37,16 +40,18 @@ public class ForecastRepository {
     private DailyDao dailyDao;
     private HourlyDao hourlyDao;
     private CurrentLocationDao currentLocationDao;
+    private UpdateTimeDao updateTimeDao;
 
     @Inject
     public ForecastRepository(OpenWeatherApi weatherApi, CurrentDao currentDao,
                               DailyDao dailyDao, HourlyDao hourlyDao,
-                              CurrentLocationDao currentLocationDao) {
+                              CurrentLocationDao currentLocationDao, UpdateTimeDao updateTimeDao) {
         this.weatherApi = weatherApi;
         this.currentDao = currentDao;
         this.dailyDao = dailyDao;
         this.hourlyDao = hourlyDao;
         this.currentLocationDao = currentLocationDao;
+        this.updateTimeDao = updateTimeDao;
     }
 
     public void updateForecast(final Location location) {
@@ -63,15 +68,22 @@ public class ForecastRepository {
                         dailyDao.deleteDailyForecast();
                         hourlyDao.deleteHourlyForecast();
                         currentLocationDao.deleteAll();
-                        currentDao.insertCurrentWeather(response.body().getCurrent());
+                        updateTimeDao.deleteAll();
+                        Daily dailyFromCurrent =
+                                CurrentToDailyConverter.convert(response.body().getCurrent());
+                        currentDao.insertCurrentWeather(dailyFromCurrent);
                         dailyDao.insertDailyForecast(response.body().getDaily());
                         hourlyDao.insertHourlyForecast(response.body().getHourly());
                         double latitude = response.body().getLatitude();
                         double longitude = response.body().getLongitude();
+                        Log.d(TAG, String.format("Repository updated current location,"
+                                + " latitude: %f, longitude: %f", latitude, longitude));
                         currentLocationDao.insert(new CurrentLocation(
                                 response.body().getTimezone(),
                                 latitude,
                                 longitude));
+                        updateTimeDao.insertUpdateTime(
+                                new UpdateTime(response.body().getCurrent().getDateTime()));
                     });
                 } else {
                     Log.d(TAG, String.valueOf(response.code()));
@@ -87,7 +99,7 @@ public class ForecastRepository {
         });
     }
 
-    public LiveData<Current> getCurrentWeather() {
+    public LiveData<Daily> getCurrentWeather() {
         return currentDao.getCurrentWeather();
     }
 
@@ -101,6 +113,10 @@ public class ForecastRepository {
 
     public LiveData<CurrentLocation> getCurrentLocation() {
         return currentLocationDao.get();
+    }
+
+    public LiveData<String> getUpdateTime() {
+        return updateTimeDao.getUpdateTime();
     }
 
     public void setCurrentLocation(CurrentLocation currentLocation) {

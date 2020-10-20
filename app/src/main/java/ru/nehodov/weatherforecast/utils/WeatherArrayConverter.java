@@ -17,8 +17,8 @@ public class WeatherArrayConverter {
     }
 
     @TypeConverter
-    public static Weather[] fromString(String valu) {
+    public static Weather[] fromString(String value) {
         Type type = new TypeToken<Weather[]>() { }.getType();
-        return new Gson().fromJson(valu, type);
+        return new Gson().fromJson(value, type);
     }
 }

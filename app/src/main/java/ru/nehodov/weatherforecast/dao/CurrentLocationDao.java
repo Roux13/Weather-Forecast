@@ -18,7 +18,4 @@ public interface CurrentLocationDao {
 
     @Query("DELETE FROM currentlocation")
     void deleteAll();
-
-    @Query("SELECT * FROM currentlocation")
-    CurrentLocation getWithouLiveData();
 }

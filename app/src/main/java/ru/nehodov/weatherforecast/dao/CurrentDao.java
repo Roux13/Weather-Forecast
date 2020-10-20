@@ -6,15 +6,16 @@ import androidx.room.Insert;
 import androidx.room.Query;
 
 import ru.nehodov.weatherforecast.entities.Current;
+import ru.nehodov.weatherforecast.entities.Daily;
 
 @Dao
 public interface CurrentDao {
 
     @Insert
-    void insertCurrentWeather(Current current);
+    void insertCurrentWeather(Daily daily);
 
     @Query("SELECT * FROM current")
-    LiveData<Current> getCurrentWeather();
+    LiveData<Daily> getCurrentWeather();
 
     @Query("DELETE FROM current")
     void deleteCurrentWeather();

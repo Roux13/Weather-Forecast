@@ -6,7 +6,7 @@ import java.util.Arrays;
 import java.util.StringJoiner;
 
 public class Forecast {
-
+    @SerializedName("current")
     private Current current;
 
     private String timezone;

@@ -10,6 +10,11 @@ public class Temp {
 
     private String max;
 
+    public Temp(String min, String max) {
+        this.min = min;
+        this.max = max;
+    }
+
     public String getMin() {
         return min;
     }
