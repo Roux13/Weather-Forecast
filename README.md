@@ -6,6 +6,15 @@ Fragments manage with Android Architecture Component. DB with Room. Network with
 ![Image1 of WeatherForecast](/images/MainScreen.png)  
 ![Image2 of WeatherForecast](/images/Settings.png)  
 
+## TO DO:
+* Splash Screen
+* Tests
+* CI
+* Different background for different weather
+* Widget
+* Hourly forecast
+* Hilt
+
 ## Contacts
  Skype: roux13333  
  e-mail: u.nehodov@gmail.com
