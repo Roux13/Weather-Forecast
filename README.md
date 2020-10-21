@@ -1,4 +1,5 @@
 [![API](https://img.shields.io/badge/API-21%2B-brightgreen.svg?style=flat)](https://android-arsenal.com/api?level=21)
+[![Roux13](https://circleci.com/gh/Roux13/Weather-Forecast.svg?style=shield)](https://app.circleci.com/pipelines/github/Roux13/Weather-Forecast)
   
 # WeatherForecast
 Android application. Pattern MVVM (Android ViewModel + LiveData + DataBinding). It uses data from OpenWeatherApi(https://openweathermap.org/). There are two fragment in MainActivity:
