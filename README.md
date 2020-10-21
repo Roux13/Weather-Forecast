@@ -1,3 +1,5 @@
+[![API](https://img.shields.io/badge/API-21%2B-brightgreen.svg?style=flat)](https://android-arsenal.com/api?level=21)
+  
 # WeatherForecast
 Android application. Pattern MVVM (Android ViewModel + LiveData + DataBinding). It uses data from OpenWeatherApi(https://openweathermap.org/). There are two fragment in MainActivity:
 First fragment views details of forecast. Second contains list of daily forecast. If you click on item, first fragment views forecast details for selected day.
