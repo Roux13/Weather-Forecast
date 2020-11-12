@@ -39,6 +39,7 @@ import java.util.concurrent.TimeUnit;
 import ru.nehodov.weatherforecast.databinding.MainActivityBinding;
 import ru.nehodov.weatherforecast.settings.SettingsActivity;
 import ru.nehodov.weatherforecast.viewmodels.ForecastViewModel;
+import ru.nehodov.weatherforecast.viewmodels.ForecastViewModelKot;
 
 import static android.content.pm.PackageManager.PERMISSION_DENIED;
 import static android.provider.Settings.ACTION_LOCATION_SOURCE_SETTINGS;
@@ -49,7 +50,7 @@ public class MainActivity extends AppCompatActivity {
 
     private static final String REFRESH_REQUEST_TAG = "periodic_work_refresh_request";
 
-    private ForecastViewModel viewModel;
+    private ForecastViewModelKot viewModel;
 
     private ActivityResultLauncher<String> requestPermissionLauncher;
 
@@ -60,7 +61,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        viewModel = new ViewModelProvider(this).get(ForecastViewModel.class);
+        viewModel = new ViewModelProvider(this).get(ForecastViewModelKot.class);
         MainActivityBinding binding =
                 DataBindingUtil.setContentView(this, R.layout.main_activity);
         binding.setViewmodel(viewModel);
@@ -160,7 +161,7 @@ public class MainActivity extends AppCompatActivity {
         return request;
     }
 
-    public LocationCallback configureLocationCallback(ForecastViewModel viewModel) {
+    public LocationCallback configureLocationCallback(ForecastViewModelKot viewModel) {
         return new LocationCallback() {
             @Override
             public void onLocationResult(LocationResult locationResult) {

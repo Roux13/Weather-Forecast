@@ -12,6 +12,7 @@ import androidx.lifecycle.ViewModelProvider;
 import ru.nehodov.weatherforecast.R;
 import ru.nehodov.weatherforecast.databinding.FragmentDetailsBinding;
 import ru.nehodov.weatherforecast.viewmodels.ForecastViewModel;
+import ru.nehodov.weatherforecast.viewmodels.ForecastViewModelKot;
 
 public class DetailsFragment extends Fragment {
 
@@ -24,7 +25,8 @@ public class DetailsFragment extends Fragment {
                         R.layout.fragment_details,
                         container,
                         false);
-        ForecastViewModel viewModel = new ViewModelProvider(requireActivity()).get(ForecastViewModel.class);
+        ForecastViewModelKot viewModel =
+                new ViewModelProvider(requireActivity()).get(ForecastViewModelKot.class);
         binding.setViewmodel(viewModel);
         binding.setLifecycleOwner(requireActivity());
         return binding.getRoot();

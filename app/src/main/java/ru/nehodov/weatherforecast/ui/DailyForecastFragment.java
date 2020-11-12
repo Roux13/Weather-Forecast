@@ -12,22 +12,22 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import ru.nehodov.weatherforecast.adapters.DailyForecastAdapter;
 import ru.nehodov.weatherforecast.R;
-import ru.nehodov.weatherforecast.SelectedDayListener;
-import ru.nehodov.weatherforecast.utils.DailyDiffUtilCallback;
+import ru.nehodov.weatherforecast.SelectedDayListenerKot;
+import ru.nehodov.weatherforecast.adapters.DailyForecastAdapterKot;
+import ru.nehodov.weatherforecast.utils.DailyDiffUtilCallbackKot;
 import ru.nehodov.weatherforecast.viewmodels.ForecastViewModel;
 
 public class DailyForecastFragment extends Fragment
-        implements SelectedDayListener {
+        implements SelectedDayListenerKot {
 
     private static final String TAG = "DailyForecastFragment";
 
     private ForecastViewModel viewModel;
 
-    private DailyForecastAdapter adapter;
+    private DailyForecastAdapterKot adapter;
 
-    private DailyDiffUtilCallback diffUtilCallback;
+    private DailyDiffUtilCallbackKot diffUtilCallback;
     private DiffUtil.DiffResult diffResult;
 
     @Override
@@ -35,14 +35,14 @@ public class DailyForecastFragment extends Fragment
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_daily_forecast, container, false);
         viewModel = new ViewModelProvider(requireActivity()).get(ForecastViewModel.class);
-        adapter = new DailyForecastAdapter(this);
+        adapter = new DailyForecastAdapterKot(this);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(requireActivity());
         RecyclerView recycler = view.findViewById(R.id.dailyRecycler);
         recycler.setLayoutManager(linearLayoutManager);
         recycler.setHasFixedSize(true);
         recycler.setAdapter(adapter);
         viewModel.getDailyForecast().observe(getViewLifecycleOwner(), dailyForecasts -> {
-            diffUtilCallback = new DailyDiffUtilCallback(
+            diffUtilCallback = new DailyDiffUtilCallbackKot(
                     adapter.getDailyForecasts(), dailyForecasts);
             diffResult = DiffUtil.calculateDiff(diffUtilCallback);
             adapter.setDailyForecasts(dailyForecasts);
@@ -52,7 +52,7 @@ public class DailyForecastFragment extends Fragment
     }
 
     @Override
-    public void selectDay(Integer selectedDay) {
+    public void selectDay(int selectedDay) {
         viewModel.setSelectedDay(selectedDay);
     }
 }

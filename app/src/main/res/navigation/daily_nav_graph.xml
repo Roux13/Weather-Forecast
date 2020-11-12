@@ -6,7 +6,7 @@
 
     <fragment
         android:id="@+id/dailyForecastFragment"
-        android:name="ru.nehodov.weatherforecast.ui.DailyForecastFragment"
+        android:name="ru.nehodov.weatherforecast.ui.DailyForecastFragmentKot"
         android:label="fragment_daily_forecast"
         tools:layout="@layout/fragment_daily_forecast" />
 </navigation>
