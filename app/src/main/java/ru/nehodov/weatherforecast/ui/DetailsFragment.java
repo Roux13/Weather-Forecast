@@ -9,11 +9,12 @@ import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
+import dagger.hilt.android.AndroidEntryPoint;
 import ru.nehodov.weatherforecast.R;
 import ru.nehodov.weatherforecast.databinding.FragmentDetailsBinding;
-import ru.nehodov.weatherforecast.viewmodels.ForecastViewModel;
 import ru.nehodov.weatherforecast.viewmodels.ForecastViewModelKot;
 
+@AndroidEntryPoint
 public class DetailsFragment extends Fragment {
 
     private static final String TAG = "DetailsFragment";

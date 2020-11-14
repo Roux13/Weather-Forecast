@@ -36,14 +36,15 @@ import java.io.IOException;
 import java.util.Locale;
 import java.util.concurrent.TimeUnit;
 
+import dagger.hilt.android.AndroidEntryPoint;
 import ru.nehodov.weatherforecast.databinding.MainActivityBinding;
 import ru.nehodov.weatherforecast.settings.SettingsActivity;
-import ru.nehodov.weatherforecast.viewmodels.ForecastViewModel;
 import ru.nehodov.weatherforecast.viewmodels.ForecastViewModelKot;
 
 import static android.content.pm.PackageManager.PERMISSION_DENIED;
 import static android.provider.Settings.ACTION_LOCATION_SOURCE_SETTINGS;
 
+@AndroidEntryPoint
 public class MainActivity extends AppCompatActivity {
 
     private static final String TAG = "MainActivity";

@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.DiffUtil.DiffResult
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import dagger.hilt.android.AndroidEntryPoint
 import ru.nehodov.weatherforecast.R
 import ru.nehodov.weatherforecast.SelectedDayListenerKot
 import ru.nehodov.weatherforecast.adapters.DailyForecastAdapterKot
@@ -18,6 +19,7 @@ import ru.nehodov.weatherforecast.viewmodels.ForecastViewModelKot
 
 private const val TAG = "DailyForecastFragment"
 
+@AndroidEntryPoint
 class DailyForecastFragmentKot : Fragment(), SelectedDayListenerKot {
 
     private lateinit var viewModel: ForecastViewModelKot

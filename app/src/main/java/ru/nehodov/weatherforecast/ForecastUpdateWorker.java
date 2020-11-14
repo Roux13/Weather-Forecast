@@ -8,6 +8,8 @@ import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
+import androidx.hilt.Assisted;
+import androidx.hilt.work.WorkerInject;
 import androidx.work.Worker;
 import androidx.work.WorkerParameters;
 
@@ -27,11 +29,10 @@ public class ForecastUpdateWorker extends Worker {
 
     private Location currentLocation;
 
-    public ForecastUpdateWorker(@NonNull Context context,
-                                @NonNull WorkerParameters workerParams) {
+    @WorkerInject
+    public ForecastUpdateWorker(@Assisted Context context,
+                                @Assisted WorkerParameters workerParams) {
         super(context, workerParams);
-        ((App) getApplicationContext()).getAppComponent().inject(this);
-//        repository = new ForecastRepository(getApplicationContext());
     }
 
     @NonNull

@@ -5,8 +5,10 @@ import androidx.appcompat.widget.Toolbar;
 
 import android.os.Bundle;
 
+import dagger.hilt.android.AndroidEntryPoint;
 import ru.nehodov.weatherforecast.R;
 
+@AndroidEntryPoint
 public class SettingsActivity extends AppCompatActivity {
 
     @Override

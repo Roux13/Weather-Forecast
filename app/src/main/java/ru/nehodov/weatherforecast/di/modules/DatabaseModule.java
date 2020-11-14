@@ -6,6 +6,9 @@ import javax.inject.Singleton;
 
 import dagger.Module;
 import dagger.Provides;
+import dagger.hilt.InstallIn;
+import dagger.hilt.android.components.ApplicationComponent;
+import dagger.hilt.android.qualifiers.ApplicationContext;
 import ru.nehodov.weatherforecast.dao.CurrentDao;
 import ru.nehodov.weatherforecast.dao.CurrentLocationDao;
 import ru.nehodov.weatherforecast.dao.DailyDao;
@@ -13,18 +16,13 @@ import ru.nehodov.weatherforecast.dao.HourlyDao;
 import ru.nehodov.weatherforecast.dao.UpdateTimeDao;
 import ru.nehodov.weatherforecast.database.ForecastDatabase;
 
+@InstallIn(ApplicationComponent.class)
 @Module
 public class DatabaseModule {
 
-//    @Provides
-//    @Singleton
-//    provideContext() {
-//
-//    }
-
     @Singleton
     @Provides
-    ForecastDatabase provideForecastDatabase(Context context) {
+    ForecastDatabase provideForecastDatabase(@ApplicationContext Context context) {
         return ForecastDatabase.getInstance(context);
     }
 

@@ -1,11 +1,12 @@
 package ru.nehodov.weatherforecast.viewmodels
 
-import android.app.Application
 import android.location.Location
-import androidx.lifecycle.AndroidViewModel
+import androidx.hilt.Assisted
+import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import ru.nehodov.weatherforecast.App
+import androidx.lifecycle.SavedStateHandle
+import androidx.lifecycle.ViewModel
 import ru.nehodov.weatherforecast.entities.CurrentLocation
 import ru.nehodov.weatherforecast.entities.Daily
 import ru.nehodov.weatherforecast.entities.Hourly
@@ -14,28 +15,20 @@ import javax.inject.Inject
 
 private const val TODAY = 0
 
-class ForecastViewModelKot(application: Application) : AndroidViewModel(application) {
+class ForecastViewModelKot @ViewModelInject constructor(
+        @Assisted private val savedInstanceState: SavedStateHandle,
+        private val repository: ForecastRepository
+        )
+    : ViewModel() {
 
-    @Inject
-    lateinit var repository: ForecastRepository
-
-    private val currentWeather: LiveData<Daily>
-    val dailyForecast: LiveData<MutableList<Daily>>
-    private val hourlyForecast: LiveData<MutableList<Hourly>>
-    val currentLocation: LiveData<CurrentLocation>
-    val updateTime: LiveData<String>
+    private val currentWeather: LiveData<Daily> = repository.currentWeather
+    val dailyForecast: LiveData<MutableList<Daily>> = repository.dailyForecast
+    private val hourlyForecast: LiveData<MutableList<Hourly>> = repository.hourlyForecast
+    val currentLocation: LiveData<CurrentLocation> = repository.currentLocation
+    val updateTime: LiveData<String> = repository.updateTime
 
     val selectedDay = MutableLiveData(TODAY)
     val locationTitle = MutableLiveData("")
-
-    init {
-        (application.applicationContext as App).appComponent.inject(this)
-        currentWeather = repository.currentWeather
-        dailyForecast = repository.dailyForecast
-        hourlyForecast = repository.hourlyForecast
-        currentLocation = repository.currentLocation
-        updateTime = repository.updateTime
-    }
 
     fun updateForecast(location: Location) {
         repository.updateForecast(location)

@@ -2,25 +2,25 @@ package ru.nehodov.weatherforecast;
 
 import android.app.Application;
 
-import ru.nehodov.weatherforecast.di.components.AppComponent;
-//import ru.nehodov.weatherforecast.di.components.DaggerAppComponent;
-import ru.nehodov.weatherforecast.di.components.DaggerAppComponent;
-import ru.nehodov.weatherforecast.di.modules.AppModule;
+import androidx.annotation.NonNull;
+import androidx.hilt.work.HiltWorkerFactory;
+import androidx.work.Configuration;
 
-public class App extends Application {
+import javax.inject.Inject;
 
-    private AppComponent appComponent;
+import dagger.hilt.android.HiltAndroidApp;
 
+@HiltAndroidApp
+public class App extends Application implements Configuration.Provider {
+
+    @Inject
+    HiltWorkerFactory workerFactory;
+
+    @NonNull
     @Override
-    public void onCreate() {
-        super.onCreate();
-        appComponent = DaggerAppComponent.builder()
-                .appModule(new AppModule(this))
+    public Configuration getWorkManagerConfiguration() {
+        return new Configuration.Builder()
+                .setWorkerFactory(workerFactory)
                 .build();
     }
-
-    public AppComponent getAppComponent() {
-        return appComponent;
-    }
-    
 }
