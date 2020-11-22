@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
-        <import type="ru.nehodov.weatherforecast.utils.WeatherUtil"/>
+        <import type="ru.nehodov.weatherforecast.utils.WeatherUtilKot"/>
         <variable
             name="daily"
             type="ru.nehodov.weatherforecast.entities.Daily" />
@@ -36,7 +36,7 @@
                     android:layout_marginStart="8dp"
                     android:layout_weight="1"
                     android:gravity="center"
-                    android:text="@{WeatherUtil.formatDate(daily.getDateTime())}"
+                    android:text="@{WeatherUtilKot.formatDate(daily.getDateTime())}"
                     android:textAlignment="center"
                     android:textColor="@color/white"
                     android:textStyle="bold"
@@ -60,7 +60,7 @@
                     android:layout_weight="1"
                     android:gravity="center"
                     android:layout_marginStart="16dp"
-                    android:text="@{WeatherUtil.formatTemp(daily.getTemp().getMax())}"
+                    android:text="@{WeatherUtilKot.formatTemp(daily.getTemp().getMax())}"
                     android:textColor="@color/white"
                     tools:text="+15" />
 
@@ -71,7 +71,7 @@
                     android:gravity="center"
                     android:layout_weight="1"
                     android:layout_marginEnd="16dp"
-                    android:text="@{WeatherUtil.formatTemp(daily.getTemp().getMin())}"
+                    android:text="@{WeatherUtilKot.formatTemp(daily.getTemp().getMin())}"
                     android:textColor="@color/white"
                     tools:text="+10" />
 

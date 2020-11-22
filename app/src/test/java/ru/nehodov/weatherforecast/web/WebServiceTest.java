@@ -8,7 +8,7 @@ import retrofit2.Call;
 import retrofit2.Response;
 import ru.nehodov.weatherforecast.entities.Forecast;
 import ru.nehodov.weatherforecast.network.OpenWeatherApi;
-import ru.nehodov.weatherforecast.network.WebService;
+import ru.nehodov.weatherforecast.network.WebServiceKot;
 
 public class WebServiceTest {
 
@@ -20,7 +20,7 @@ public class WebServiceTest {
     @Test
     public void apiConnectionTest() {
         StringBuilder stringBuilder = new StringBuilder();
-        WebService webService = new WebService();
+        WebServiceKot webService = new WebServiceKot();
         OpenWeatherApi api = webService.getApi();
         Call<Forecast> call = api.getForecast(LATITUDE, LONGITUDE, API_KEY);
         try {

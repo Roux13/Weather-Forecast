@@ -59,6 +59,8 @@ public class MainActivity extends AppCompatActivity {
 
     private LocationCallback locationCallback;
 
+    private WorkManager workManager;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

@@ -11,7 +11,6 @@ import ru.nehodov.weatherforecast.entities.CurrentLocation
 import ru.nehodov.weatherforecast.entities.Daily
 import ru.nehodov.weatherforecast.entities.Hourly
 import ru.nehodov.weatherforecast.repository.ForecastRepository
-import javax.inject.Inject
 
 private const val TODAY = 0
 

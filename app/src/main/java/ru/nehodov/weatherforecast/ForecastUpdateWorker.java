@@ -13,6 +13,8 @@ import androidx.hilt.work.WorkerInject;
 import androidx.work.Worker;
 import androidx.work.WorkerParameters;
 
+import org.jetbrains.annotations.NotNull;
+
 import javax.inject.Inject;
 
 import ru.nehodov.weatherforecast.repository.ForecastRepository;
@@ -29,9 +31,9 @@ public class ForecastUpdateWorker extends Worker {
 
     private Location currentLocation;
 
-    @WorkerInject
-    public ForecastUpdateWorker(@Assisted Context context,
-                                @Assisted WorkerParameters workerParams) {
+//    @WorkerInject
+    public ForecastUpdateWorker(@NotNull Context context,
+                                @NonNull WorkerParameters workerParams) {
         super(context, workerParams);
     }
 

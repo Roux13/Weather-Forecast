@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
-        <import type="ru.nehodov.weatherforecast.utils.WeatherUtil"/>
+        <import type="ru.nehodov.weatherforecast.utils.WeatherUtilKot"/>
         <import type="java.util.List"/>
         <variable
             name="viewmodel"
@@ -22,7 +22,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="64dp"
-            android:text="@{WeatherUtil.formatDate(viewmodel.dailyForecast[viewmodel.selectedDay].getDateTime())}"
+            android:text="@{WeatherUtilKot.formatDate(viewmodel.dailyForecast[viewmodel.selectedDay].getDateTime())}"
             android:textColor="@color/white"
             android:textSize="20sp"
             android:textStyle="bold"
@@ -36,7 +36,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textColor="@color/white"
-            android:text="@{String.format(@string/time_update_pattern, WeatherUtil.formatTime(viewmodel.updateTime))}"
+            android:text="@{String.format(@string/time_update_pattern, WeatherUtilKot.formatTime(viewmodel.updateTime))}"
             app:layout_constraintEnd_toEndOf="@+id/detailsDateTV"
             app:layout_constraintStart_toStartOf="@+id/detailsDateTV"
             app:layout_constraintTop_toBottomOf="@+id/detailsDateTV"
@@ -74,7 +74,7 @@
             android:textColor="@color/white"
             android:textSize="48sp"
             android:textStyle="bold"
-            android:text="@{WeatherUtil.formatTemp(viewmodel.dailyForecast[viewmodel.selectedDay].getTemp().getMax())}"
+            android:text="@{WeatherUtilKot.formatTemp(viewmodel.dailyForecast[viewmodel.selectedDay].getTemp().getMax())}"
             app:layout_constraintStart_toEndOf="@+id/updateTimeTV"
             app:layout_constraintTop_toBottomOf="@+id/weatherDescriptionTV"
             tools:text="+15" />
@@ -85,7 +85,7 @@
             android:layout_height="wrap_content"
             android:textColor="@color/white"
             android:textSize="20sp"
-            android:text="@{String.format(@string/feels_like_pattern, WeatherUtil.formatTemp(viewmodel.dailyForecast[viewmodel.selectedDay].getFeelsLike().getDay()))}"
+            android:text="@{String.format(@string/feels_like_pattern, WeatherUtilKot.formatTemp(viewmodel.dailyForecast[viewmodel.selectedDay].getFeelsLike().getDay()))}"
             app:layout_constraintStart_toStartOf="@+id/detailsTempTV"
             app:layout_constraintTop_toBottomOf="@+id/detailsTempTV"
             tools:text="Feels like: +11" />

@@ -7,7 +7,7 @@ import org.mockito.junit.MockitoJUnitRunner;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 
-import ru.nehodov.weatherforecast.utils.WeatherUtil;
+import ru.nehodov.weatherforecast.utils.WeatherUtilKot;
 
 import static org.junit.Assert.assertEquals;
 
@@ -19,7 +19,7 @@ public class WeatherUtilTest {
         String tempBefore = "10.05";
         String expected = "+10";
 
-        assertEquals(expected, WeatherUtil.formatTemp(tempBefore));
+        assertEquals(expected, WeatherUtilKot.formatTemp(tempBefore));
     }
 
     @Test
@@ -27,7 +27,7 @@ public class WeatherUtilTest {
         String tempBefore = "-10.05";
         String expected = "-10";
 
-        assertEquals(expected, WeatherUtil.formatTemp(tempBefore));
+        assertEquals(expected, WeatherUtilKot.formatTemp(tempBefore));
     }
 
     @Test
@@ -35,7 +35,7 @@ public class WeatherUtilTest {
         String tempBefore = "30.1";
         String expected = "+30";
 
-        assertEquals(expected, WeatherUtil.formatTemp(tempBefore));
+        assertEquals(expected, WeatherUtilKot.formatTemp(tempBefore));
     }
 
     @Test
@@ -43,7 +43,7 @@ public class WeatherUtilTest {
         String tempBefore = "20.5";
         String expected = "+21";
 
-        assertEquals(expected, WeatherUtil.formatTemp(tempBefore));
+        assertEquals(expected, WeatherUtilKot.formatTemp(tempBefore));
     }
 
     @Test
@@ -51,7 +51,7 @@ public class WeatherUtilTest {
         String tempBefore = "A";
         String expected = "";
 
-        assertEquals(expected, WeatherUtil.formatTemp(tempBefore));
+        assertEquals(expected, WeatherUtilKot.formatTemp(tempBefore));
     }
 
     @Test
@@ -59,7 +59,7 @@ public class WeatherUtilTest {
         String tempBefore = "--5";
         String expected = "";
 
-        assertEquals(expected, WeatherUtil.formatTemp(tempBefore));
+        assertEquals(expected, WeatherUtilKot.formatTemp(tempBefore));
     }
 
     @Test
@@ -67,7 +67,7 @@ public class WeatherUtilTest {
         String tempBefore = null;
         String expected = "";
 
-        assertEquals(expected, WeatherUtil.formatTemp(tempBefore));
+        assertEquals(expected, WeatherUtilKot.formatTemp(tempBefore));
     }
 
     @Test
@@ -75,7 +75,7 @@ public class WeatherUtilTest {
         String tempBefore = "";
         String expected = "";
 
-        assertEquals(expected, WeatherUtil.formatTemp(tempBefore));
+        assertEquals(expected, WeatherUtilKot.formatTemp(tempBefore));
     }
 
     @Test
@@ -83,7 +83,7 @@ public class WeatherUtilTest {
         String now = String.valueOf(Instant.now().getEpochSecond());
         String expected = "Today";
 
-        assertEquals(expected, WeatherUtil.formatDate(now));
+        assertEquals(expected, WeatherUtilKot.formatDate(now));
     }
 
     @Test
@@ -92,7 +92,7 @@ public class WeatherUtilTest {
                 Instant.now().plus(1, ChronoUnit.DAYS).getEpochSecond());
         String expected = "Tomorrow";
 
-        assertEquals(expected, WeatherUtil.formatDate(tomorrow));
+        assertEquals(expected, WeatherUtilKot.formatDate(tomorrow));
     }
 
     @Test
@@ -100,7 +100,7 @@ public class WeatherUtilTest {
         String date = "1599156000";
         String expected = "03 09 Thu";
 
-        assertEquals(expected, WeatherUtil.formatDate(date));
+        assertEquals(expected, WeatherUtilKot.formatDate(date));
     }
 
     @Test
@@ -108,7 +108,7 @@ public class WeatherUtilTest {
         String unixTime = null;
         String expected = "";
 
-        assertEquals(expected, WeatherUtil.formatDate(unixTime));
+        assertEquals(expected, WeatherUtilKot.formatDate(unixTime));
     }
 
     @Test
@@ -116,7 +116,7 @@ public class WeatherUtilTest {
         String unixTime = "12h12";
         String expected = "";
 
-        assertEquals(expected, WeatherUtil.formatDate(unixTime));
+        assertEquals(expected, WeatherUtilKot.formatDate(unixTime));
     }
 
     @Test
@@ -124,6 +124,6 @@ public class WeatherUtilTest {
         String unixTime = "";
         String expected = "";
 
-        assertEquals(expected, WeatherUtil.formatDate(unixTime));
+        assertEquals(expected, WeatherUtilKot.formatDate(unixTime));
     }
 }
