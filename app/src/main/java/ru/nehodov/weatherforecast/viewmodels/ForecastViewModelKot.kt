@@ -10,21 +10,23 @@ import androidx.lifecycle.ViewModel
 import ru.nehodov.weatherforecast.entities.CurrentLocation
 import ru.nehodov.weatherforecast.entities.Daily
 import ru.nehodov.weatherforecast.entities.Hourly
-import ru.nehodov.weatherforecast.repository.ForecastRepository
-
-private const val TODAY = 0
+import ru.nehodov.weatherforecast.repository.ForecastRepositoryKot
 
 class ForecastViewModelKot @ViewModelInject constructor(
         @Assisted private val savedInstanceState: SavedStateHandle,
-        private val repository: ForecastRepository
+        private val repository: ForecastRepositoryKot
         )
     : ViewModel() {
 
-    private val currentWeather: LiveData<Daily> = repository.currentWeather
-    val dailyForecast: LiveData<MutableList<Daily>> = repository.dailyForecast
-    private val hourlyForecast: LiveData<MutableList<Hourly>> = repository.hourlyForecast
-    val currentLocation: LiveData<CurrentLocation> = repository.currentLocation
-    val updateTime: LiveData<String> = repository.updateTime
+    companion object {
+        private const val TODAY = 0
+    }
+
+    private val currentWeather: LiveData<Daily?> = repository.currentWeatherData()
+    val dailyForecast: LiveData<MutableList<Daily?>?> = repository.dailyForecastData()
+    private val hourlyForecast: LiveData<MutableList<Hourly?>?> = repository.hourlyForecastData()
+    val currentLocation: LiveData<CurrentLocation?> = repository.currentLocationData()
+    val timeUpdate: LiveData<String?> = repository.updateTimeData()
 
     val selectedDay = MutableLiveData(TODAY)
     val locationTitle = MutableLiveData("")

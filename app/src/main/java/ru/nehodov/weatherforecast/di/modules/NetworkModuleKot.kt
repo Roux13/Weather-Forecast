@@ -7,7 +7,7 @@ import dagger.hilt.android.components.ApplicationComponent
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import ru.nehodov.weatherforecast.network.NetworkContract
-import ru.nehodov.weatherforecast.network.OpenWeatherApi
+import ru.nehodov.weatherforecast.network.OpenWeatherApiKot
 import ru.nehodov.weatherforecast.network.WebServiceKot
 import javax.inject.Singleton
 
@@ -16,7 +16,7 @@ import javax.inject.Singleton
 object NetworkModuleKot {
 
     @Provides
-    fun provideGsonConverterFactory() = GsonConverterFactory.create()
+    fun provideGsonConverterFactory(): GsonConverterFactory = GsonConverterFactory.create()
 
     @Singleton
     @Provides
@@ -27,7 +27,7 @@ object NetworkModuleKot {
 
     @Singleton
     @Provides
-    fun provideOpenWeatherApi(retrofit: Retrofit): OpenWeatherApi = retrofit.create(OpenWeatherApi::class.java)
+    fun provideOpenWeatherApi(retrofit: Retrofit): OpenWeatherApiKot = retrofit.create(OpenWeatherApiKot::class.java)
 
     @Singleton
     @Provides

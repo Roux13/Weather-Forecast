@@ -7,7 +7,7 @@ import dagger.hilt.InstallIn
 import dagger.hilt.android.components.ApplicationComponent
 import dagger.hilt.android.qualifiers.ApplicationContext
 import ru.nehodov.weatherforecast.dao.*
-import ru.nehodov.weatherforecast.database.ForecastDatabase
+import ru.nehodov.weatherforecast.database.ForecastDatabaseKot
 import javax.inject.Singleton
 
 @InstallIn(ApplicationComponent::class)
@@ -16,23 +16,23 @@ object DatabaseModuleKot {
 
     @Singleton
     @Provides
-    fun provideDatabase(@ApplicationContext context: Context): ForecastDatabase =
-            ForecastDatabase.getInstance(context)
+    fun provideDatabase(@ApplicationContext context: Context): ForecastDatabaseKot =
+            ForecastDatabaseKot.getInstance(context)
 
     @Provides
-    fun provideCurrentDao(database: ForecastDatabase): CurrentDao = database.currentDao
+    fun provideCurrentDao(database: ForecastDatabaseKot): CurrentDaoKot = database.currentDao
 
     @Provides
-    fun provideDailyDao(database: ForecastDatabase): DailyDao = database.dailyDao
+    fun provideDailyDao(database: ForecastDatabaseKot): DailyDaoKot = database.dailyDao
 
     @Provides
-    fun provideHourlyDao(database: ForecastDatabase): HourlyDao = database.hourlyDao
+    fun provideHourlyDao(database: ForecastDatabaseKot): HourlyDaoKot = database.hourlyDao
 
     @Provides
-    fun provideCurrentLocationDao(database: ForecastDatabase): CurrentLocationDao = database.currentLocationDao
+    fun provideCurrentLocationDao(database: ForecastDatabaseKot): CurrentLocationDaoKot = database.currentLocationDao
 
     @Provides
-    fun provideUpdateTimeDao(database: ForecastDatabase): UpdateTimeDao = database.updateTimeDao
+    fun provideUpdateTimeDao(database: ForecastDatabaseKot): TimeUpdateDaoKot = database.updateTimeDao
 
 
 }

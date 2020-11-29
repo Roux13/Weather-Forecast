@@ -17,7 +17,7 @@ import org.jetbrains.annotations.NotNull;
 
 import javax.inject.Inject;
 
-import ru.nehodov.weatherforecast.repository.ForecastRepository;
+import ru.nehodov.weatherforecast.repository.ForecastRepositoryKot;
 
 import static android.Manifest.permission.*;
 import static android.content.pm.PackageManager.*;
@@ -27,7 +27,7 @@ public class ForecastUpdateWorker extends Worker {
     private static final String TAG = "ForecastUpdateWorker";
 
     @Inject
-    ForecastRepository repository;
+    ForecastRepositoryKot repository;
 
     private Location currentLocation;
 

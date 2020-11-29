@@ -17,10 +17,12 @@ import ru.nehodov.weatherforecast.adapters.DailyForecastAdapterKot
 import ru.nehodov.weatherforecast.utils.DailyDiffUtilCallbackKot
 import ru.nehodov.weatherforecast.viewmodels.ForecastViewModelKot
 
-private const val TAG = "DailyForecastFragment"
-
 @AndroidEntryPoint
 class DailyForecastFragmentKot : Fragment(), SelectedDayListenerKot {
+
+    companion object {
+        private const val TAG = "DailyForecastFragment"
+    }
 
     private lateinit var viewModel: ForecastViewModelKot
 
@@ -40,11 +42,13 @@ class DailyForecastFragmentKot : Fragment(), SelectedDayListenerKot {
             setHasFixedSize(true)
             adapter = this@DailyForecastFragmentKot.adapter
         }
-        viewModel.dailyForecast.observe(viewLifecycleOwner, {
-            diffUtilCallback = DailyDiffUtilCallbackKot(adapter.getDailyForecasts(), newList = it)
-            diffResult = DiffUtil.calculateDiff(diffUtilCallback)
-            adapter.setDailyForecasts(it)
-            diffResult.dispatchUpdatesTo(adapter)
+        viewModel.dailyForecast.observe(viewLifecycleOwner, { it ->
+            if (it != null) {
+                diffUtilCallback = DailyDiffUtilCallbackKot(adapter.getDailyForecasts(), newList = it)
+                diffResult = DiffUtil.calculateDiff(diffUtilCallback)
+                adapter.setDailyForecasts(it)
+                diffResult.dispatchUpdatesTo(adapter)
+            }
         })
         return view
     }

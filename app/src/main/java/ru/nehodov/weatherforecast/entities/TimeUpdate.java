@@ -8,20 +8,20 @@ import java.util.Objects;
 import java.util.StringJoiner;
 
 @Entity
-public class UpdateTime {
+public class TimeUpdate {
 
     @PrimaryKey(autoGenerate = true)
     private long id;
 
     private String time;
 
-    public UpdateTime(long id, String time) {
+    public TimeUpdate(long id, String time) {
         this.id = id;
         this.time = time;
     }
 
     @Ignore
-    public UpdateTime(String time) {
+    public TimeUpdate(String time) {
         this.time = time;
     }
 
@@ -49,7 +49,7 @@ public class UpdateTime {
         if (o == null || getClass() != o.getClass()) {
             return false;
         }
-        UpdateTime that = (UpdateTime) o;
+        TimeUpdate that = (TimeUpdate) o;
         return id == that.id && Objects.equals(time, that.time);
     }
 
@@ -60,7 +60,7 @@ public class UpdateTime {
 
     @Override
     public String toString() {
-        return new StringJoiner(", ", UpdateTime.class.getSimpleName() + "[", "]")
+        return new StringJoiner(", ", TimeUpdate.class.getSimpleName() + "[", "]")
                 .add("id=" + id)
                 .add("time='" + time + "'")
                 .toString();

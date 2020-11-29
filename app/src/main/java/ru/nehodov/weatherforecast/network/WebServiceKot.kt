@@ -5,6 +5,6 @@ import javax.inject.Inject
 class WebServiceKot {
 
     @Inject
-    lateinit var api: OpenWeatherApi
+    lateinit var api: OpenWeatherApiKot
 
 }

@@ -12,7 +12,7 @@ import ru.nehodov.weatherforecast.entities.Daily
 class DailyForecastAdapterKot(private val selectedDayListener: SelectedDayListenerKot)
     : RecyclerView.Adapter<DailyForecastAdapterKot.DailyForecastHolderKot>() {
 
-    private val dailyForecasts: MutableList<Daily> = ArrayList()
+    private val dailyForecasts: MutableList<Daily?> = ArrayList()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): DailyForecastHolderKot {
         val inflater: LayoutInflater = LayoutInflater.from(parent.context)
@@ -31,20 +31,20 @@ class DailyForecastAdapterKot(private val selectedDayListener: SelectedDayListen
         return dailyForecasts.size
     }
 
-    fun setDailyForecasts(dailyForecasts: MutableList<Daily>) {
+    fun setDailyForecasts(dailyForecasts: MutableList<Daily?>) {
         this.dailyForecasts.apply {
             clear()
             addAll(dailyForecasts)
         }
     }
 
-    fun getDailyForecasts(): MutableList<Daily> {
+    fun getDailyForecasts(): MutableList<Daily?> {
         return this.dailyForecasts
     }
 
     class DailyForecastHolderKot(private val binding: DailyItemBinding) : RecyclerView.ViewHolder(binding.root) {
 
-        fun bind(daily: Daily) {
+        fun bind(daily: Daily?) {
             binding.apply {
                 setDaily(daily)
                 executePendingBindings()

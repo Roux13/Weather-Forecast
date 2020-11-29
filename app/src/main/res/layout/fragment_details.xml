@@ -36,7 +36,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textColor="@color/white"
-            android:text="@{String.format(@string/time_update_pattern, WeatherUtilKot.formatTime(viewmodel.updateTime))}"
+            android:text="@{String.format(@string/time_update_pattern, WeatherUtilKot.formatTime(viewmodel.timeUpdate))}"
             app:layout_constraintEnd_toEndOf="@+id/detailsDateTV"
             app:layout_constraintStart_toStartOf="@+id/detailsDateTV"
             app:layout_constraintTop_toBottomOf="@+id/detailsDateTV"
