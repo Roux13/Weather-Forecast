@@ -8,32 +8,26 @@ import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
-import androidx.hilt.Assisted;
-import androidx.hilt.work.WorkerInject;
 import androidx.work.Worker;
 import androidx.work.WorkerParameters;
 
-import org.jetbrains.annotations.NotNull;
-
-import javax.inject.Inject;
-
 import ru.nehodov.weatherforecast.repository.ForecastRepositoryKot;
 
-import static android.Manifest.permission.*;
-import static android.content.pm.PackageManager.*;
+import static android.Manifest.permission.ACCESS_BACKGROUND_LOCATION;
+import static android.Manifest.permission.ACCESS_FINE_LOCATION;
+import static android.content.pm.PackageManager.PERMISSION_GRANTED;
 
 public class ForecastUpdateWorker extends Worker {
 
     private static final String TAG = "ForecastUpdateWorker";
 
-    @Inject
     ForecastRepositoryKot repository;
 
     private Location currentLocation;
 
-//    @WorkerInject
-    public ForecastUpdateWorker(@NotNull Context context,
-                                @NonNull WorkerParameters workerParams) {
+    //    @WorkerInject
+    public ForecastUpdateWorker(Context context,
+                                WorkerParameters workerParams) {
         super(context, workerParams);
     }
 

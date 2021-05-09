@@ -5,26 +5,27 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.DiffUtil.DiffResult
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import dagger.hilt.android.AndroidEntryPoint
+import org.koin.androidx.viewmodel.ext.android.sharedViewModel
+import org.koin.core.component.KoinApiExtension
+import org.koin.core.component.KoinComponent
 import ru.nehodov.weatherforecast.R
 import ru.nehodov.weatherforecast.SelectedDayListenerKot
 import ru.nehodov.weatherforecast.adapters.DailyForecastAdapterKot
 import ru.nehodov.weatherforecast.utils.DailyDiffUtilCallbackKot
 import ru.nehodov.weatherforecast.viewmodels.ForecastViewModelKot
 
-@AndroidEntryPoint
-class DailyForecastFragmentKot : Fragment(), SelectedDayListenerKot {
+@KoinApiExtension
+class DailyForecastFragmentKot : Fragment(), SelectedDayListenerKot, KoinComponent {
 
     companion object {
         private const val TAG = "DailyForecastFragment"
     }
 
-    private lateinit var viewModel: ForecastViewModelKot
+    private val viewModel: ForecastViewModelKot by sharedViewModel()
 
     private lateinit var adapter: DailyForecastAdapterKot
 
@@ -34,7 +35,6 @@ class DailyForecastFragmentKot : Fragment(), SelectedDayListenerKot {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
         val view: View = inflater.inflate(R.layout.fragment_daily_forecast, container, false)
-        viewModel = ViewModelProvider(requireActivity()).get(ForecastViewModelKot::class.java)
         adapter = DailyForecastAdapterKot(this)
         val recycler: RecyclerView = view.findViewById(R.id.dailyRecycler)
         recycler.apply {

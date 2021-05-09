@@ -18,10 +18,6 @@ import androidx.core.content.ContextCompat;
 import androidx.databinding.DataBindingUtil;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.preference.PreferenceManager;
-import androidx.work.Constraints;
-import androidx.work.ExistingPeriodicWorkPolicy;
-import androidx.work.NetworkType;
-import androidx.work.PeriodicWorkRequest;
 import androidx.work.WorkManager;
 
 import com.google.android.gms.location.FusedLocationProviderClient;
@@ -36,7 +32,6 @@ import java.io.IOException;
 import java.util.Locale;
 import java.util.concurrent.TimeUnit;
 
-import dagger.hilt.android.AndroidEntryPoint;
 import ru.nehodov.weatherforecast.databinding.MainActivityBinding;
 import ru.nehodov.weatherforecast.settings.SettingsActivity;
 import ru.nehodov.weatherforecast.viewmodels.ForecastViewModelKot;
@@ -44,7 +39,6 @@ import ru.nehodov.weatherforecast.viewmodels.ForecastViewModelKot;
 import static android.content.pm.PackageManager.PERMISSION_DENIED;
 import static android.provider.Settings.ACTION_LOCATION_SOURCE_SETTINGS;
 
-@AndroidEntryPoint
 public class MainActivity extends AppCompatActivity {
 
     private static final String TAG = "MainActivity";
@@ -181,22 +175,22 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void runUpdateWorker() {
-        Constraints constraints = new Constraints.Builder()
-                .setRequiresBatteryNotLow(true)
-                .setRequiredNetworkType(NetworkType.CONNECTED)
-                .build();
-
-        PeriodicWorkRequest workRequest = new PeriodicWorkRequest
-                .Builder(ForecastUpdateWorker.class, getUpdateInterval(), TimeUnit.MINUTES)
-                .setConstraints(constraints)
-                .setInitialDelay(5, TimeUnit.MINUTES)
-                .addTag(REFRESH_REQUEST_TAG)
-                .build();
-        WorkManager.getInstance(this).enqueueUniquePeriodicWork(
-                REFRESH_REQUEST_TAG,
-                ExistingPeriodicWorkPolicy.KEEP,
-                workRequest
-        );
+//        Constraints constraints = new Constraints.Builder()
+//                .setRequiresBatteryNotLow(true)
+//                .setRequiredNetworkType(NetworkType.CONNECTED)
+//                .build();
+//
+//        PeriodicWorkRequest workRequest = new PeriodicWorkRequest
+//                .Builder(ForecastUpdateWorker.class, getUpdateInterval(), TimeUnit.MINUTES)
+//                .setConstraints(constraints)
+//                .setInitialDelay(5, TimeUnit.MINUTES)
+//                .addTag(REFRESH_REQUEST_TAG)
+//                .build();
+//        WorkManager.getInstance(this).enqueueUniquePeriodicWork(
+//                REFRESH_REQUEST_TAG,
+//                ExistingPeriodicWorkPolicy.KEEP,
+//                workRequest
+//        );
     }
 
     @Override

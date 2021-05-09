@@ -4,25 +4,63 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
-        <import type="ru.nehodov.weatherforecast.utils.WeatherUtilKot"/>
-        <import type="java.util.List"/>
+
+        <import type="androidx.databinding.ObservableField" />
+
         <variable
-            name="viewmodel"
-            type="ru.nehodov.weatherforecast.viewmodels.ForecastViewModelKot" />
+            name="dateTime"
+            type="ObservableField&lt;String&gt;" />
+
+        <variable
+            name="description"
+            type="ObservableField&lt;String&gt;" />
+
+        <variable
+            name="iconPath"
+            type="ObservableField&lt;String&gt;" />
+
+        <variable
+            name="maxTemp"
+            type="ObservableField&lt;String&gt;" />
+
+        <variable
+            name="feelsLike"
+            type="ObservableField&lt;String&gt;" />
+
+        <variable
+            name="humidity"
+            type="ObservableField&lt;String&gt;" />
+
+        <variable
+            name="uvi"
+            type="ObservableField&lt;String&gt;" />
+
+        <variable
+            name="pressure"
+            type="ObservableField&lt;String&gt;" />
+
+        <variable
+            name="windSpeed"
+            type="ObservableField&lt;String&gt;" />
+
+        <variable
+            name="timeUpdate"
+            type="ObservableField&lt;String&gt;" />
+
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/details_background"
-        tools:context=".ui.DetailsFragment">
+        tools:context=".ui.DetailsFragmentKot">
 
         <TextView
             android:id="@+id/detailsDateTV"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="64dp"
-            android:text="@{WeatherUtilKot.formatDate(viewmodel.dailyForecast[viewmodel.selectedDay].getDateTime())}"
+            android:text="@{dateTime}"
             android:textColor="@color/white"
             android:textSize="20sp"
             android:textStyle="bold"
@@ -36,7 +74,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textColor="@color/white"
-            android:text="@{String.format(@string/time_update_pattern, WeatherUtilKot.formatTime(viewmodel.timeUpdate))}"
+            android:text="@{timeUpdate}"
             app:layout_constraintEnd_toEndOf="@+id/detailsDateTV"
             app:layout_constraintStart_toStartOf="@+id/detailsDateTV"
             app:layout_constraintTop_toBottomOf="@+id/detailsDateTV"
@@ -48,7 +86,7 @@
             android:layout_height="wrap_content"
             android:textColor="@color/white"
             android:textSize="20sp"
-            android:text="@{viewmodel.dailyForecast[viewmodel.selectedDay].getWeather()[0].getDescription()}"
+            android:text="@{description}"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/updateTimeTV"
@@ -61,7 +99,7 @@
             android:layout_marginStart="64dp"
             android:layout_marginTop="8dp"
             android:contentDescription="@string/weather_icon"
-            app:loadWeatherIcon="@{viewmodel.dailyForecast[viewmodel.selectedDay]}"
+            app:loadWeatherIcon="@{iconPath}"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/weatherDescriptionTV"
             tools:srcCompat="@tools:sample/avatars" />
@@ -74,7 +112,7 @@
             android:textColor="@color/white"
             android:textSize="48sp"
             android:textStyle="bold"
-            android:text="@{WeatherUtilKot.formatTemp(viewmodel.dailyForecast[viewmodel.selectedDay].getTemp().getMax())}"
+            android:text="@{maxTemp}"
             app:layout_constraintStart_toEndOf="@+id/updateTimeTV"
             app:layout_constraintTop_toBottomOf="@+id/weatherDescriptionTV"
             tools:text="+15" />
@@ -85,7 +123,7 @@
             android:layout_height="wrap_content"
             android:textColor="@color/white"
             android:textSize="20sp"
-            android:text="@{String.format(@string/feels_like_pattern, WeatherUtilKot.formatTemp(viewmodel.dailyForecast[viewmodel.selectedDay].getFeelsLike().getDay()))}"
+            android:text="@{feelsLike}"
             app:layout_constraintStart_toStartOf="@+id/detailsTempTV"
             app:layout_constraintTop_toBottomOf="@+id/detailsTempTV"
             tools:text="Feels like: +11" />
@@ -97,7 +135,7 @@
             android:layout_marginStart="16dp"
             android:layout_marginTop="32dp"
             android:textColor="@color/white"
-            android:text="@{String.format(@string/humidity_pattern, viewmodel.dailyForecast[viewmodel.selectedDay].getHumidity())}"
+            android:text="@{humidity}"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/feelsLikeTV"
             tools:text="Humidity: 34%" />
@@ -107,7 +145,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textColor="@color/white"
-            android:text="@{String.format(@string/uvi_pattern, viewmodel.dailyForecast[viewmodel.selectedDay].getUvi())}"
+            android:text="@{String.format(@string/uvi_pattern, uvi)}"
             app:layout_constraintStart_toStartOf="@+id/windSpeedTv"
             app:layout_constraintTop_toTopOf="@+id/humidityTV"
             tools:text="UVI: 9.17" />
@@ -118,7 +156,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
             android:textColor="@color/white"
-            android:text="@{String.format(@string/pressure_pattern, viewmodel.dailyForecast[viewmodel.selectedDay].getPressure())}"
+            android:text="@{String.format(@string/pressure_pattern, pressure)}"
             app:layout_constraintStart_toStartOf="@+id/humidityTV"
             app:layout_constraintTop_toBottomOf="@id/humidityTV"
             tools:text="Pressure: 1009 pa" />
@@ -130,7 +168,7 @@
             android:layout_marginTop="16dp"
             android:layout_marginEnd="16dp"
             android:textColor="@color/white"
-            android:text="@{String.format(@string/wind_wpeed_pattern, viewmodel.dailyForecast[viewmodel.selectedDay].getWindSpeed())}"
+            android:text="@{String.format(@string/wind_wpeed_pattern, windSpeed)}"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@id/uviTv"
             tools:text="Wind speed: 2.53 m/sec" />

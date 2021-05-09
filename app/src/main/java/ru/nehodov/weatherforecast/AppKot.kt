@@ -1,10 +1,26 @@
 package ru.nehodov.weatherforecast
 
 import android.app.Application
-import androidx.work.Configuration
-import androidx.work.WorkerFactory
-import dagger.hilt.android.HiltAndroidApp
-import javax.inject.Inject
+import org.koin.android.ext.koin.androidContext
+import org.koin.core.context.startKoin
+import ru.nehodov.weatherforecast.di.modules.DataModule
+import ru.nehodov.weatherforecast.di.modules.DatabaseModuleKot
+import ru.nehodov.weatherforecast.di.modules.NetworkModuleKot
+import ru.nehodov.weatherforecast.di.modules.VieModelModule
 
-@HiltAndroidApp
-class AppKot : Application()
+class AppKot : Application() {
+    override fun onCreate() {
+        super.onCreate()
+
+        startKoin {
+            androidContext(this@AppKot)
+
+            modules(
+                DatabaseModuleKot.databaseModule,
+                DataModule.dataModule,
+                NetworkModuleKot.networkModule,
+                VieModelModule.module
+            )
+        }
+    }
+}

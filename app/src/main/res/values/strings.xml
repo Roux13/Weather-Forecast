@@ -15,11 +15,9 @@
     <string name="enable_forecast_update">Enable forecast update</string>
     <string name="updating_location">Updating location…</string>
     <string name="humidity_pattern">Humidity: %s%%</string>
-    <string name="time_update_pattern">(%s)</string>
+    <string name="time_update_pattern">(%1$s)</string>
     <string name="pressure_pattern">Pressure: %s mbar</string>
     <string name="uvi_pattern">UVI: %s</string>
     <string name="wind_wpeed_pattern">Wind speed: %s m/sec</string>
-    <string name="feels_like_pattern">Feels like: %s</string>
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="feels_like_pattern">Feels like: %1$s</string>
 </resources>

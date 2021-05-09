@@ -8,16 +8,17 @@ import ru.nehodov.weatherforecast.R
 import ru.nehodov.weatherforecast.SelectedDayListenerKot
 import ru.nehodov.weatherforecast.databinding.DailyItemBinding
 import ru.nehodov.weatherforecast.entities.Daily
+import ru.nehodov.weatherforecast.utils.WeatherUtilKot
 
-class DailyForecastAdapterKot(private val selectedDayListener: SelectedDayListenerKot)
-    : RecyclerView.Adapter<DailyForecastAdapterKot.DailyForecastHolderKot>() {
+class DailyForecastAdapterKot(private val selectedDayListener: SelectedDayListenerKot) :
+    RecyclerView.Adapter<DailyForecastAdapterKot.DailyForecastHolderKot>() {
 
     private val dailyForecasts: MutableList<Daily?> = ArrayList()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): DailyForecastHolderKot {
         val inflater: LayoutInflater = LayoutInflater.from(parent.context)
         val binding: DailyItemBinding =
-                DataBindingUtil.inflate(inflater, R.layout.daily_item, parent, false)
+            DataBindingUtil.inflate(inflater, R.layout.daily_item, parent, false)
         return DailyForecastHolderKot(binding)
     }
 
@@ -42,15 +43,29 @@ class DailyForecastAdapterKot(private val selectedDayListener: SelectedDayListen
         return this.dailyForecasts
     }
 
-    class DailyForecastHolderKot(private val binding: DailyItemBinding) : RecyclerView.ViewHolder(binding.root) {
+    class DailyForecastHolderKot(private val binding: DailyItemBinding) :
+        RecyclerView.ViewHolder(binding.root) {
 
         fun bind(daily: Daily?) {
             binding.apply {
-                setDaily(daily)
+                dailyViewData = DailyViewData(
+                    dateTime = WeatherUtilKot.formatDate(daily?.dateTime ?: ""),
+                    maxTemp = WeatherUtilKot.formatTemp(daily?.temp?.max ?: ""),
+                    minTemp = WeatherUtilKot.formatTemp(daily?.temp?.min ?: ""),
+                    iconPath = daily?.weather?.get(0)?.icon ?: ""
+                )
+
                 executePendingBindings()
             }
         }
 
     }
+
+    data class DailyViewData(
+        val dateTime: String,
+        val maxTemp: String,
+        val minTemp: String,
+        val iconPath: String
+    )
 
 }

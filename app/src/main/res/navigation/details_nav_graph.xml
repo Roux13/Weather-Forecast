@@ -5,12 +5,12 @@
 
     <fragment
         android:id="@+id/detailsFragment"
-        android:name="ru.nehodov.weatherforecast.ui.DetailsFragment"
-        android:label="DetailsFragment" >
+        android:name="ru.nehodov.weatherforecast.ui.DetailsFragmentKot"
+        android:label="DetailsFragment">
         <argument
             android:name="numberOfDay"
-            app:argType="integer"
-            android:defaultValue="0" />
+            android:defaultValue="0"
+            app:argType="integer" />
     </fragment>
     <action android:id="@+id/action_global_detailsFragment" app:destination="@id/detailsFragment" />
 </navigation>

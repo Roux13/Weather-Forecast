@@ -1,26 +1,25 @@
 package ru.nehodov.weatherforecast.viewmodels
 
 import android.location.Location
-import androidx.hilt.Assisted
-import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
+import org.koin.core.component.KoinApiExtension
+import org.koin.core.component.KoinComponent
+import org.koin.core.component.inject
 import ru.nehodov.weatherforecast.entities.CurrentLocation
 import ru.nehodov.weatherforecast.entities.Daily
 import ru.nehodov.weatherforecast.entities.Hourly
 import ru.nehodov.weatherforecast.repository.ForecastRepositoryKot
 
-class ForecastViewModelKot @ViewModelInject constructor(
-        @Assisted private val savedInstanceState: SavedStateHandle,
-        private val repository: ForecastRepositoryKot
-        )
-    : ViewModel() {
+@KoinApiExtension
+class ForecastViewModelKot : ViewModel(), KoinComponent {
 
     companion object {
         private const val TODAY = 0
     }
+
+    private val repository: ForecastRepositoryKot by inject()
 
     private val currentWeather: LiveData<Daily?> = repository.currentWeatherData()
     val dailyForecast: LiveData<MutableList<Daily?>?> = repository.dailyForecastData()

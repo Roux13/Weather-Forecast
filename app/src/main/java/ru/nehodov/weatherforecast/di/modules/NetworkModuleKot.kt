@@ -1,35 +1,31 @@
 package ru.nehodov.weatherforecast.di.modules
 
-import dagger.Module
-import dagger.Provides
-import dagger.hilt.InstallIn
-import dagger.hilt.android.components.ApplicationComponent
+import org.koin.dsl.module
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import ru.nehodov.weatherforecast.network.NetworkContract
 import ru.nehodov.weatherforecast.network.OpenWeatherApiKot
 import ru.nehodov.weatherforecast.network.WebServiceKot
-import javax.inject.Singleton
-
-@InstallIn(ApplicationComponent::class)
-@Module
 object NetworkModuleKot {
 
-    @Provides
-    fun provideGsonConverterFactory(): GsonConverterFactory = GsonConverterFactory.create()
+    val networkModule = module {
 
-    @Singleton
-    @Provides
-    fun provideRetrofit(gsonConverterFactory: GsonConverterFactory): Retrofit = Retrofit.Builder()
-            .baseUrl(NetworkContract.BASE_URL)
-            .addConverterFactory(gsonConverterFactory)
-            .build()
+        factory { GsonConverterFactory.create() }
 
-    @Singleton
-    @Provides
-    fun provideOpenWeatherApi(retrofit: Retrofit): OpenWeatherApiKot = retrofit.create(OpenWeatherApiKot::class.java)
+        fun provideRetrofit(gsonConverterFactory: GsonConverterFactory): Retrofit =
+            Retrofit.Builder()
+                .baseUrl(NetworkContract.BASE_URL)
+                .addConverterFactory(gsonConverterFactory)
+                .build()
 
-    @Singleton
-    @Provides
-    fun provideWebService(): WebServiceKot = WebServiceKot()
+        single { provideRetrofit(get()) }
+
+        fun provideOpenWeatherApi(retrofit: Retrofit): OpenWeatherApiKot =
+            retrofit.create(OpenWeatherApiKot::class.java)
+
+        single { provideOpenWeatherApi(get()) }
+
+        single { WebServiceKot() }
+
+    }
 }

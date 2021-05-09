@@ -4,10 +4,9 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
-        <import type="ru.nehodov.weatherforecast.utils.WeatherUtilKot"/>
         <variable
-            name="daily"
-            type="ru.nehodov.weatherforecast.entities.Daily" />
+            name="dailyViewData"
+            type="ru.nehodov.weatherforecast.adapters.DailyForecastAdapterKot.DailyViewData" />
     </data>
 
     <LinearLayout
@@ -36,7 +35,7 @@
                     android:layout_marginStart="8dp"
                     android:layout_weight="1"
                     android:gravity="center"
-                    android:text="@{WeatherUtilKot.formatDate(daily.getDateTime())}"
+                    android:text="@{dailyViewData.dateTime}"
                     android:textAlignment="center"
                     android:textColor="@color/white"
                     android:textStyle="bold"
@@ -49,7 +48,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_marginStart="16dp"
-                    app:loadWeatherIcon="@{daily}"
+                    app:loadWeatherIcon="@{dailyViewData.iconPath}"
                     app:isMini="@{true}"
                     tools:srcCompat="@tools:sample/avatars" />
 
@@ -60,7 +59,7 @@
                     android:layout_weight="1"
                     android:gravity="center"
                     android:layout_marginStart="16dp"
-                    android:text="@{WeatherUtilKot.formatTemp(daily.getTemp().getMax())}"
+                    android:text="@{dailyViewData.maxTemp}"
                     android:textColor="@color/white"
                     tools:text="+15" />
 
@@ -71,7 +70,7 @@
                     android:gravity="center"
                     android:layout_weight="1"
                     android:layout_marginEnd="16dp"
-                    android:text="@{WeatherUtilKot.formatTemp(daily.getTemp().getMin())}"
+                    android:text="@{dailyViewData.minTemp}"
                     android:textColor="@color/white"
                     tools:text="+10" />
 
