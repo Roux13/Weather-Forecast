@@ -5,7 +5,7 @@
 
     <fragment
         android:id="@+id/detailsFragment"
-        android:name="ru.nehodov.weatherforecast.ui.DetailsFragmentKot"
+        android:name="ru.nehodov.weatherforecast.ui.DetailsFragment"
         android:label="DetailsFragment">
         <argument
             android:name="numberOfDay"

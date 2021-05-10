@@ -1,14 +1,25 @@
 package ru.nehodov.weatherforecast.di.modules
 
 import org.koin.dsl.module
-import ru.nehodov.weatherforecast.repository.ForecastRepositoryKot
+import ru.nehodov.weatherforecast.repositories.*
 
 object DataModule {
 
-    val dataModule = module {
+    val module = module {
 
-        single { ForecastRepositoryKot(get(), get()) }
+        single<IForecastGateway> { ForecastGateway(get(), get(), get(), get(), get(), get()) }
 
+        single<ICurrentDbRepository> { CurrentDbRepository(get()) }
+
+        single<ICurrentLocationDbRepository> { CurrentLocationDbRepository(get()) }
+
+        single<IDailiesDbRepository> { DailiesDbRepository(get()) }
+
+        single<IHourliesDbRepository> { HourliesDbRepository(get()) }
+
+        single<IUpdateTimeRepository> { UpdateTimeRepository(get()) }
+
+        single<IForecastWebRepository> { ForecastWebRepository(get()) }
     }
 
 }

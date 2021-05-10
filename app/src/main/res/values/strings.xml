@@ -14,10 +14,10 @@
     <string name="switch_enable_update_preferences_key">switch_enable_update</string>
     <string name="enable_forecast_update">Enable forecast update</string>
     <string name="updating_location">Updating location…</string>
-    <string name="humidity_pattern">Humidity: %s%%</string>
+    <string name="humidity_pattern">Humidity: %1$s%%</string>
     <string name="time_update_pattern">(%1$s)</string>
-    <string name="pressure_pattern">Pressure: %s mbar</string>
-    <string name="uvi_pattern">UVI: %s</string>
-    <string name="wind_wpeed_pattern">Wind speed: %s m/sec</string>
+    <string name="pressure_pattern">Pressure: %1$s mbar</string>
+    <string name="uvi_pattern">UVI: %1$s</string>
+    <string name="wind_wpeed_pattern">Wind speed: %1$s m/sec</string>
     <string name="feels_like_pattern">Feels like: %1$s</string>
 </resources>

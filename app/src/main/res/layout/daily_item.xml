@@ -6,7 +6,7 @@
     <data>
         <variable
             name="dailyViewData"
-            type="ru.nehodov.weatherforecast.adapters.DailyForecastAdapterKot.DailyViewData" />
+            type="ru.nehodov.weatherforecast.adapters.DailyForecastAdapter.DailyViewData" />
     </data>
 
     <LinearLayout

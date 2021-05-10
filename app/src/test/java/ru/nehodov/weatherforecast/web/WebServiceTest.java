@@ -7,8 +7,8 @@ import java.io.IOException;
 import retrofit2.Call;
 import retrofit2.Response;
 import ru.nehodov.weatherforecast.entities.Forecast;
-import ru.nehodov.weatherforecast.network.OpenWeatherApiKot;
-import ru.nehodov.weatherforecast.network.WebServiceKot;
+import ru.nehodov.weatherforecast.network.OpenWeatherApi;
+import ru.nehodov.weatherforecast.network.WebService;
 
 public class WebServiceTest {
 
@@ -20,17 +20,17 @@ public class WebServiceTest {
     @Test
     public void apiConnectionTest() {
         StringBuilder stringBuilder = new StringBuilder();
-        WebServiceKot webService = new WebServiceKot();
-        OpenWeatherApiKot api = webService.getApi();
+        WebService webService = new WebService();
+        OpenWeatherApi api = webService.getApi();
         Call<Forecast> call = api.getForecast(LATITUDE, LONGITUDE, API_KEY);
         try {
             Response<Forecast> response = call.execute();
             if (response.isSuccessful()) {
-                    stringBuilder.append("Response is successful");
-                    stringBuilder.append(response.body());
-                } else {
-                    stringBuilder.append(response.code()).append("%n").append(response.errorBody());
-                }
+                stringBuilder.append("Response is successful");
+                stringBuilder.append(response.body());
+            } else {
+                stringBuilder.append(response.code()).append("%n").append(response.errorBody());
+            }
         } catch (IOException e) {
             e.printStackTrace();
         }

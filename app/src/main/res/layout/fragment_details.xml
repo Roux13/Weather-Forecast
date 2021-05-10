@@ -53,7 +53,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/details_background"
-        tools:context=".ui.DetailsFragmentKot">
+        tools:context=".ui.DetailsFragment">
 
         <TextView
             android:id="@+id/detailsDateTV"
@@ -145,7 +145,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textColor="@color/white"
-            android:text="@{String.format(@string/uvi_pattern, uvi)}"
+            android:text="@{uvi}"
             app:layout_constraintStart_toStartOf="@+id/windSpeedTv"
             app:layout_constraintTop_toTopOf="@+id/humidityTV"
             tools:text="UVI: 9.17" />
@@ -156,7 +156,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
             android:textColor="@color/white"
-            android:text="@{String.format(@string/pressure_pattern, pressure)}"
+            android:text="@{pressure}"
             app:layout_constraintStart_toStartOf="@+id/humidityTV"
             app:layout_constraintTop_toBottomOf="@id/humidityTV"
             tools:text="Pressure: 1009 pa" />
@@ -168,7 +168,7 @@
             android:layout_marginTop="16dp"
             android:layout_marginEnd="16dp"
             android:textColor="@color/white"
-            android:text="@{String.format(@string/wind_wpeed_pattern, windSpeed)}"
+            android:text="@{windSpeed}"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@id/uviTv"
             tools:text="Wind speed: 2.53 m/sec" />

@@ -8,7 +8,7 @@
 
         <variable
             name="viewmodel"
-            type="ru.nehodov.weatherforecast.viewmodels.ForecastViewModelKot" />
+            type="ru.nehodov.weatherforecast.viewmodels.ForecastViewModel" />
 
     </data>
 

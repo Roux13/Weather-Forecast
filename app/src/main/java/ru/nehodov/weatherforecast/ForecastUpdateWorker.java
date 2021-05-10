@@ -11,7 +11,7 @@ import androidx.core.content.ContextCompat;
 import androidx.work.Worker;
 import androidx.work.WorkerParameters;
 
-import ru.nehodov.weatherforecast.repository.ForecastRepositoryKot;
+import ru.nehodov.weatherforecast.repositories.IForecastGateway;
 
 import static android.Manifest.permission.ACCESS_BACKGROUND_LOCATION;
 import static android.Manifest.permission.ACCESS_FINE_LOCATION;
@@ -21,11 +21,10 @@ public class ForecastUpdateWorker extends Worker {
 
     private static final String TAG = "ForecastUpdateWorker";
 
-    ForecastRepositoryKot repository;
+    IForecastGateway forecastGateway;
 
     private Location currentLocation;
 
-    //    @WorkerInject
     public ForecastUpdateWorker(Context context,
                                 WorkerParameters workerParams) {
         super(context, workerParams);
@@ -37,7 +36,7 @@ public class ForecastUpdateWorker extends Worker {
         Log.d(TAG, "ForecastWorker work");
         requestCurrentLocation();
         if (currentLocation != null) {
-            repository.updateForecast(currentLocation);
+            forecastGateway.updateForecast(currentLocation);
             Log.d("TAG", "ForecastWorker refresh location");
             return Worker.Result.success();
         }
