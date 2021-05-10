@@ -180,7 +180,7 @@ class MainActivity : AppCompatActivity(), KoinComponent {
             .build()
         val workRequest: PeriodicWorkRequest =
             PeriodicWorkRequest.Builder(
-                ForecastUpdateWorker::class.java,
+                ForecastUpdateWorkerKot::class.java,
                 getUpdateInterval(),
                 TimeUnit.MINUTES
             )
