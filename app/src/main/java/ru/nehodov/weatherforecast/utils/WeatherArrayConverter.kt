@@ -7,14 +7,14 @@ import ru.nehodov.weatherforecast.entities.Weather
 
 class WeatherArrayConverter {
     @TypeConverter
-    fun fromList(weathers: Array<Weather?>?): String? {
+    fun fromList(weathers: List<Weather>): String {
         val gson = Gson()
         return gson.toJson(weathers)
     }
 
     @TypeConverter
-    fun fromString(value: String?): Array<Weather?>? {
-        val type = object : TypeToken<Array<Weather?>?>() {}.type
+    fun fromString(value: String): List<Weather> {
+        val type = object : TypeToken<List<Weather>>() {}.type
         return Gson().fromJson(value, type)
     }
 }
