@@ -6,7 +6,7 @@ import org.koin.core.context.startKoin
 import ru.nehodov.weatherforecast.di.modules.DataModule
 import ru.nehodov.weatherforecast.di.modules.DatabaseModule
 import ru.nehodov.weatherforecast.di.modules.NetworkModule
-import ru.nehodov.weatherforecast.di.modules.VieModelModule
+import ru.nehodov.weatherforecast.di.modules.ViewModelModule
 
 class App : Application() {
     override fun onCreate() {
@@ -19,7 +19,7 @@ class App : Application() {
                 DatabaseModule.module,
                 DataModule.module,
                 NetworkModule.module,
-                VieModelModule.module
+                ViewModelModule.module
             )
         }
     }
