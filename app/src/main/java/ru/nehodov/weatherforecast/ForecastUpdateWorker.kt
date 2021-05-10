@@ -14,7 +14,7 @@ import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 import ru.nehodov.weatherforecast.repositories.IForecastGateway
 
-class ForecastUpdateWorkerKot(
+class ForecastUpdateWorker(
     context: Context,
     workerParams: WorkerParameters
 ) : Worker(context, workerParams), KoinComponent {

@@ -180,7 +180,7 @@ class MainActivity : AppCompatActivity(), KoinComponent {
             .build()
         val workRequest: PeriodicWorkRequest =
             PeriodicWorkRequest.Builder(
-                ForecastUpdateWorkerKot::class.java,
+                ForecastUpdateWorker::class.java,
                 getUpdateInterval(),
                 TimeUnit.MINUTES
             )
@@ -231,7 +231,7 @@ class MainActivity : AppCompatActivity(), KoinComponent {
 
     private fun getUpdateInterval(): Long {
         return PreferenceManager.getDefaultSharedPreferences(this)
-            .getLong(getString(R.string.edit_text_period_preferences_key), 5)
+            .getString(getString(R.string.edit_text_period_preferences_key), "5")?.toLong() ?: 5L
     }
 
     private fun showAlertMessageNoGps() {
