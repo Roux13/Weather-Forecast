@@ -9,11 +9,11 @@ import ru.nehodov.weatherforecast.entities.Current
 interface CurrentDao {
 
     @Insert
-    fun insert(daily: Current)
+    suspend fun insert(daily: Current)
 
     @Query("SELECT * FROM current")
-    fun currentWeatherData(): Current
+    suspend fun currentWeatherData(): Current
 
     @Query("DELETE FROM current")
-    fun deleteAll()
+    suspend fun deleteAll()
 }

@@ -1,40 +1,30 @@
-package ru.nehodov.weatherforecast.web;
+package ru.nehodov.weatherforecast.web
 
-import org.junit.Test;
+import kotlinx.coroutines.runBlocking
+import org.junit.Test
+import ru.nehodov.weatherforecast.entities.Forecast
+import ru.nehodov.weatherforecast.network.WebService
+import java.io.IOException
 
-import java.io.IOException;
-
-import retrofit2.Call;
-import retrofit2.Response;
-import ru.nehodov.weatherforecast.entities.Forecast;
-import ru.nehodov.weatherforecast.network.OpenWeatherApi;
-import ru.nehodov.weatherforecast.network.WebService;
-
-public class WebServiceTest {
-
-    private final static String LATITUDE = "33.441792";
-    private final static String LONGITUDE = "-94.037689";
-    private final static String API_KEY = "d9a386e4aee859ca058160aa3647c436";
-
-
+class WebServiceTest {
     @Test
-    public void apiConnectionTest() {
-        StringBuilder stringBuilder = new StringBuilder();
-        WebService webService = new WebService();
-        OpenWeatherApi api = webService.getApi();
-        Call<Forecast> call = api.getForecast(LATITUDE, LONGITUDE, API_KEY);
+    fun apiConnectionTest() {
+        val stringBuilder = StringBuilder()
+        val webService = WebService()
+        val api = webService.api
         try {
-            Response<Forecast> response = call.execute();
-            if (response.isSuccessful()) {
-                stringBuilder.append("Response is successful");
-                stringBuilder.append(response.body());
-            } else {
-                stringBuilder.append(response.code()).append("%n").append(response.errorBody());
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
+            val call: Forecast = runBlocking { api.getForecast(LATITUDE, LONGITUDE, API_KEY) }
+            stringBuilder.append("Response is successful")
+            stringBuilder.append(call)
+        } catch (e: IOException) {
+            e.printStackTrace()
         }
-         System.out.println(stringBuilder.toString());
+        println(stringBuilder.toString())
     }
 
+    companion object {
+        private const val LATITUDE = "33.441792"
+        private const val LONGITUDE = "-94.037689"
+        private const val API_KEY = "d9a386e4aee859ca058160aa3647c436"
+    }
 }

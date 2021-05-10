@@ -1,14 +1,15 @@
 package ru.nehodov.weatherforecast.viewmodels
 
 import android.location.Location
-import android.os.Process
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import kotlinx.coroutines.CoroutineExceptionHandler
+import kotlinx.coroutines.launch
 import org.koin.core.component.KoinApiExtension
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
-import ru.nehodov.weatherforecast.database.ForecastDatabase
 import ru.nehodov.weatherforecast.entities.*
 import ru.nehodov.weatherforecast.repositories.*
 import ru.nehodov.weatherforecast.utils.CurrentToDailyConverter
@@ -19,6 +20,11 @@ class ForecastViewModel : ViewModel(), KoinComponent {
     companion object {
         private const val TODAY = 0
     }
+
+    private val coroutineExceptionHandler =
+        CoroutineExceptionHandler { coroutineContext, throwable ->
+            throwable.printStackTrace()
+        }
 
     private val currentRepository: ICurrentDbRepository by inject()
     private val dailyRepository: IDailiesDbRepository by inject()
@@ -44,22 +50,19 @@ class ForecastViewModel : ViewModel(), KoinComponent {
     private val _timeUpdate: MutableLiveData<String> = MutableLiveData("")
     val timeUpdate: LiveData<String> = _timeUpdate
 
-    val selectedDay = MutableLiveData(TODAY)
+    private val selectedDay = MutableLiveData(TODAY)
     val locationTitle = MutableLiveData("")
 
 
-    fun updateForecast(location: Location) {
-        ForecastDatabase.DB_EXECUTOR_SERVICE.execute {
-            Process.setThreadPriority(Process.THREAD_PRIORITY_BACKGROUND)
-            forecastGateway.updateForecast(location)
-            val currentWeatherAsDaily =
-                CurrentToDailyConverter.convert(currentRepository.getCurrentWeather())
-            val dailyList = listOf(currentWeatherAsDaily) + dailyRepository.getDailies()
-            _dailyForecast.postValue(dailyList)
-            _currentLocation.postValue(currentLocationRepository.currentLocationData())
-            _timeUpdate.postValue(timeUpdateRepository.timeUpdateData())
-            setSelectedDay(TODAY)
-        }
+    fun updateForecast(location: Location) = viewModelScope.launch(coroutineExceptionHandler) {
+        forecastGateway.updateForecast(location)
+        val currentWeatherAsDaily =
+            CurrentToDailyConverter.convert(currentRepository.getCurrentWeather())
+        val dailyList = listOf(currentWeatherAsDaily) + dailyRepository.getDailies()
+        _dailyForecast.postValue(dailyList)
+        _currentLocation.postValue(currentLocationRepository.currentLocationData())
+        _timeUpdate.postValue(timeUpdateRepository.timeUpdateData())
+        setSelectedDay(TODAY)
     }
 
     fun setSelectedDay(selectedDay: Int) {

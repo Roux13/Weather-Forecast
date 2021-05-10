@@ -7,7 +7,6 @@ import ru.nehodov.weatherforecast.entities.Temp
 
 object CurrentToDailyConverter {
 
-    @JvmStatic
     fun convert(current: Current): Daily {
         val temp = Temp(current.temp, current.temp)
         val feelsLike = FeelsLike(current.feelsLike, current.feelsLike)

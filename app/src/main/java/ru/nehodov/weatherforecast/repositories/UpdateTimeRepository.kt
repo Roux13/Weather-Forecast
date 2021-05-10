@@ -4,21 +4,21 @@ import ru.nehodov.weatherforecast.database.ForecastDatabase
 import ru.nehodov.weatherforecast.entities.TimeUpdate
 
 interface IUpdateTimeRepository {
-    fun insert(timeUpdate: TimeUpdate)
-    fun timeUpdateData(): String
-    fun deleteAll()
+    suspend fun insert(timeUpdate: TimeUpdate)
+    suspend fun timeUpdateData(): String
+    suspend fun deleteAll()
 }
 
 class UpdateTimeRepository(private val db: ForecastDatabase) : IUpdateTimeRepository {
-    override fun insert(timeUpdate: TimeUpdate) {
+    override suspend fun insert(timeUpdate: TimeUpdate) {
         db.updateTimeDao.insert(timeUpdate)
     }
 
-    override fun timeUpdateData(): String {
+    override suspend fun timeUpdateData(): String {
         return db.updateTimeDao.timeUpdateData()
     }
 
-    override fun deleteAll() {
+    override suspend fun deleteAll() {
         db.updateTimeDao.deleteAll()
     }
 }

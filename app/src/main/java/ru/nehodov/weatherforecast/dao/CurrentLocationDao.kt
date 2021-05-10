@@ -9,11 +9,11 @@ import ru.nehodov.weatherforecast.entities.CurrentLocation
 interface CurrentLocationDao {
 
     @Insert
-    fun insert(currentLocation: CurrentLocation)
+    suspend fun insert(currentLocation: CurrentLocation)
 
     @Query("SELECT * FROM CurrentLocation")
-    fun currentLocationData(): CurrentLocation
+    suspend fun currentLocationData(): CurrentLocation
 
     @Query("DELETE FROM CurrentLocation")
-    fun deleteAll()
+    suspend fun deleteAll()
 }

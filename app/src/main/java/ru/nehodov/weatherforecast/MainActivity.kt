@@ -51,8 +51,6 @@ class MainActivity : AppCompatActivity(), KoinComponent {
 
     private var locationCallback: LocationCallback? = null
 
-    private val workManager: WorkManager? = null
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         val binding: MainActivityBinding =
@@ -183,8 +181,7 @@ class MainActivity : AppCompatActivity(), KoinComponent {
                 ForecastUpdateWorker::class.java,
                 getUpdateInterval(),
                 TimeUnit.MINUTES
-            )
-                .setConstraints(constraints)
+            ).setConstraints(constraints)
                 .setInitialDelay(5, TimeUnit.MINUTES)
                 .addTag(REFRESH_REQUEST_TAG)
                 .build()

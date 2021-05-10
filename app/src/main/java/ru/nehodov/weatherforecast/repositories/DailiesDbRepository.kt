@@ -4,21 +4,21 @@ import ru.nehodov.weatherforecast.database.ForecastDatabase
 import ru.nehodov.weatherforecast.entities.Daily
 
 interface IDailiesDbRepository {
-    fun deleteAll()
-    fun insert(dailies: List<Daily>)
-    fun getDailies(): List<Daily>
+    suspend fun deleteAll()
+    suspend fun insert(dailies: List<Daily>)
+    suspend fun getDailies(): List<Daily>
 }
 
 class DailiesDbRepository(private val db: ForecastDatabase) : IDailiesDbRepository {
-    override fun deleteAll() {
+    override suspend fun deleteAll() {
         db.dailyDao.deleteAll()
     }
 
-    override fun insert(dailies: List<Daily>) {
+    override suspend fun insert(dailies: List<Daily>) {
         db.dailyDao.insert(dailies)
     }
 
-    override fun getDailies(): List<Daily> {
+    override suspend fun getDailies(): List<Daily> {
         return db.dailyDao.dailyForecastData()
     }
 }

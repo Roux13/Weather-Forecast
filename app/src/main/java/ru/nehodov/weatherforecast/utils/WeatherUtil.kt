@@ -19,7 +19,6 @@ class WeatherUtil {
          * @param tempBefore Text temperature before formatting
          * @return formatted temperature
          */
-        @JvmStatic
         fun formatTemp(tempBefore: String?): String {
             var tempAfter = ""
             if (!tempBefore.isNullOrEmpty() && tempBefore.matches(CORRECT_TEMP_FORMATS)) {
@@ -29,7 +28,6 @@ class WeatherUtil {
             return tempAfter
         }
 
-        @JvmStatic
         fun formatDate(unixTime: String?): String {
             if (!unixTime.isNullOrEmpty() && unixTime.matches(CORRECT_UNIX_TIME_FORMAT)) {
                 val instant: Instant = Instant.ofEpochSecond(unixTime.toLong())
@@ -48,7 +46,6 @@ class WeatherUtil {
             } else return ""
         }
 
-        @JvmStatic
         fun formatTime(unixTime: String?): String? {
             return if (unixTime.isNullOrEmpty() || !unixTime.matches(CORRECT_UNIX_TIME_FORMAT)) {
                 ""

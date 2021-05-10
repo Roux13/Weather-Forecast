@@ -9,12 +9,12 @@ import ru.nehodov.weatherforecast.entities.Hourly
 interface HourlyDao {
 
     @Insert
-    fun insert(hourlies: List<Hourly>)
+    suspend fun insert(hourlies: List<Hourly>)
 
     @Query("SELECT * FROM hourly")
-    fun hourlyData(): List<Hourly>
+    suspend fun hourlyData(): List<Hourly>
 
     @Query("DELETE FROM hourly")
-    fun deleteAll()
+    suspend fun deleteAll()
 
 }

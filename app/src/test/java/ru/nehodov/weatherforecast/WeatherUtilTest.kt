@@ -1,129 +1,111 @@
-package ru.nehodov.weatherforecast;
+package ru.nehodov.weatherforecast
 
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.mockito.junit.MockitoJUnitRunner;
+import junit.framework.Assert.assertEquals
+import org.junit.Test
+import org.junit.runner.RunWith
+import org.mockito.junit.MockitoJUnitRunner
+import ru.nehodov.weatherforecast.utils.WeatherUtil
+import java.time.Instant
+import java.time.temporal.ChronoUnit
 
-import java.time.Instant;
-import java.time.temporal.ChronoUnit;
-
-import ru.nehodov.weatherforecast.utils.WeatherUtil;
-
-import static org.junit.Assert.assertEquals;
-
-@RunWith(MockitoJUnitRunner.class)
-public class WeatherUtilTest {
-
+@RunWith(MockitoJUnitRunner::class)
+class WeatherUtilTest {
     @Test
-    public void formatTemperatureWhenTempBeforeIs10_05ThenPlus10() {
-        String tempBefore = "10.05";
-        String expected = "+10";
-
-        assertEquals(expected, WeatherUtil.formatTemp(tempBefore));
+    fun formatTemperatureWhenTempBeforeIs10_05ThenPlus10() {
+        val tempBefore = "10.05"
+        val expected = "+10"
+        assertEquals(expected, WeatherUtil.formatTemp(tempBefore))
     }
 
     @Test
-    public void formatTemperatureWhenTempBeforeIsMinus10_05ThenMinus10() {
-        String tempBefore = "-10.05";
-        String expected = "-10";
-
-        assertEquals(expected, WeatherUtil.formatTemp(tempBefore));
+    fun formatTemperatureWhenTempBeforeIsMinus10_05ThenMinus10() {
+        val tempBefore = "-10.05"
+        val expected = "-10"
+        assertEquals(expected, WeatherUtil.formatTemp(tempBefore))
     }
 
     @Test
-    public void formatTemperatureWhenTempBeforeIs30_1ThenPlus30() {
-        String tempBefore = "30.1";
-        String expected = "+30";
-
-        assertEquals(expected, WeatherUtil.formatTemp(tempBefore));
+    fun formatTemperatureWhenTempBeforeIs30_1ThenPlus30() {
+        val tempBefore = "30.1"
+        val expected = "+30"
+        assertEquals(expected, WeatherUtil.formatTemp(tempBefore))
     }
 
     @Test
-    public void formatTemperatureWhenTempBeforeIs20_5ThenPlus21() {
-        String tempBefore = "20.5";
-        String expected = "+21";
-
-        assertEquals(expected, WeatherUtil.formatTemp(tempBefore));
+    fun formatTemperatureWhenTempBeforeIs20_5ThenPlus21() {
+        val tempBefore = "20.5"
+        val expected = "+21"
+        assertEquals(expected, WeatherUtil.formatTemp(tempBefore))
     }
 
     @Test
-    public void formatTemperatureWhenWrongInputThenNaN() {
-        String tempBefore = "A";
-        String expected = "";
-
-        assertEquals(expected, WeatherUtil.formatTemp(tempBefore));
+    fun formatTemperatureWhenWrongInputThenNaN() {
+        val tempBefore = "A"
+        val expected = ""
+        assertEquals(expected, WeatherUtil.formatTemp(tempBefore))
     }
 
     @Test
-    public void formatTemperatureWhenDoubleMinusThenNaN() {
-        String tempBefore = "--5";
-        String expected = "";
-
-        assertEquals(expected, WeatherUtil.formatTemp(tempBefore));
+    fun formatTemperatureWhenDoubleMinusThenNaN() {
+        val tempBefore = "--5"
+        val expected = ""
+        assertEquals(expected, WeatherUtil.formatTemp(tempBefore))
     }
 
     @Test
-    public void formatTempWhenArgIsNull() {
-        String tempBefore = null;
-        String expected = "";
-
-        assertEquals(expected, WeatherUtil.formatTemp(tempBefore));
+    fun formatTempWhenArgIsNull() {
+        val tempBefore: String? = null
+        val expected = ""
+        assertEquals(expected, WeatherUtil.formatTemp(tempBefore))
     }
 
     @Test
-    public void formatTempWhenArgIsEmptyLine() {
-        String tempBefore = "";
-        String expected = "";
-
-        assertEquals(expected, WeatherUtil.formatTemp(tempBefore));
+    fun formatTempWhenArgIsEmptyLine() {
+        val tempBefore = ""
+        val expected = ""
+        assertEquals(expected, WeatherUtil.formatTemp(tempBefore))
     }
 
     @Test
-    public void formatDateWhenDateIsNowThenToday() {
-        String now = String.valueOf(Instant.now().getEpochSecond());
-        String expected = "Today";
-
-        assertEquals(expected, WeatherUtil.formatDate(now));
+    fun formatDateWhenDateIsNowThenToday() {
+        val now = Instant.now().epochSecond.toString()
+        val expected = "Today"
+        assertEquals(expected, WeatherUtil.formatDate(now))
     }
 
     @Test
-    public void formatDateWhenDateIsTomorrowThenTomorrow() {
-        String tomorrow = String.valueOf(
-                Instant.now().plus(1, ChronoUnit.DAYS).getEpochSecond());
-        String expected = "Tomorrow";
-
-        assertEquals(expected, WeatherUtil.formatDate(tomorrow));
+    fun formatDateWhenDateIsTomorrowThenTomorrow() {
+        val tomorrow =
+            Instant.now().plus(1, ChronoUnit.DAYS).epochSecond.toString()
+        val expected = "Tomorrow"
+        assertEquals(expected, WeatherUtil.formatDate(tomorrow))
     }
 
     @Test
-    public void formatDateWhenDateIs03_09_2020Tomorrow() {
-        String date = "1599156000";
-        String expected = "03 09 Thu";
-
-        assertEquals(expected, WeatherUtil.formatDate(date));
+    fun formatDateWhenDateIs03_09_2020Tomorrow() {
+        val date = "1599156000"
+        val expected = "03 09 Thu"
+        assertEquals(expected, WeatherUtil.formatDate(date))
     }
 
     @Test
-    public void formatDateWhenArgIsNull() {
-        String unixTime = null;
-        String expected = "";
-
-        assertEquals(expected, WeatherUtil.formatDate(unixTime));
+    fun formatDateWhenArgIsNull() {
+        val unixTime: String? = null
+        val expected = ""
+        assertEquals(expected, WeatherUtil.formatDate(unixTime))
     }
 
     @Test
-    public void formatDateWhenArgHasLetter() {
-        String unixTime = "12h12";
-        String expected = "";
-
-        assertEquals(expected, WeatherUtil.formatDate(unixTime));
+    fun formatDateWhenArgHasLetter() {
+        val unixTime = "12h12"
+        val expected = ""
+        assertEquals(expected, WeatherUtil.formatDate(unixTime))
     }
 
     @Test
-    public void formatDateWhenArgIsEmptyLine() {
-        String unixTime = "";
-        String expected = "";
-
-        assertEquals(expected, WeatherUtil.formatDate(unixTime));
+    fun formatDateWhenArgIsEmptyLine() {
+        val unixTime = ""
+        val expected = ""
+        assertEquals(expected, WeatherUtil.formatDate(unixTime))
     }
 }

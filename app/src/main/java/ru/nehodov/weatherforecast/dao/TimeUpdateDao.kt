@@ -9,12 +9,12 @@ import ru.nehodov.weatherforecast.entities.TimeUpdate
 interface TimeUpdateDao {
 
     @Insert
-    fun insert(timeUpdate: TimeUpdate)
+    suspend fun insert(timeUpdate: TimeUpdate)
 
     @Query("SELECT time FROM TimeUpdate")
-    fun timeUpdateData(): String
+    suspend fun timeUpdateData(): String
 
     @Query("DELETE FROM TimeUpdate")
-    fun deleteAll()
+    suspend fun deleteAll()
 
 }

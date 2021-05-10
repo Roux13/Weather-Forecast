@@ -4,21 +4,21 @@ import ru.nehodov.weatherforecast.database.ForecastDatabase
 import ru.nehodov.weatherforecast.entities.Current
 
 interface ICurrentDbRepository {
-    fun deleteAll()
-    fun insert(current: Current)
-    fun getCurrentWeather(): Current
+    suspend fun deleteAll()
+    suspend fun insert(current: Current)
+    suspend fun getCurrentWeather(): Current
 }
 
 class CurrentDbRepository(private val db: ForecastDatabase) : ICurrentDbRepository {
-    override fun deleteAll() {
+    override suspend fun deleteAll() {
         db.currentDao.deleteAll()
     }
 
-    override fun insert(current: Current) {
+    override suspend fun insert(current: Current) {
         db.currentDao.insert(current)
     }
 
-    override fun getCurrentWeather(): Current {
+    override suspend fun getCurrentWeather(): Current {
         return db.currentDao.currentWeatherData()
     }
 }

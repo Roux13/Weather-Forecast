@@ -9,12 +9,12 @@ import ru.nehodov.weatherforecast.entities.Daily
 interface DailyDao {
 
     @Insert
-    fun insert(daily: List<Daily>)
+    suspend fun insert(daily: List<Daily>)
 
     @Query("SELECT * FROM daily")
-    fun dailyForecastData(): List<Daily>
+    suspend fun dailyForecastData(): List<Daily>
 
     @Query("DELETE FROM daily")
-    fun deleteAll()
+    suspend fun deleteAll()
 
 }

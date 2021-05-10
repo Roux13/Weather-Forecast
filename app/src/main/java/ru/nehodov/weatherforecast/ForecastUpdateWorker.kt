@@ -8,8 +8,10 @@ import android.location.LocationManager
 import android.os.Build
 import android.util.Log
 import androidx.core.content.ContextCompat
-import androidx.work.Worker
+import androidx.work.CoroutineWorker
 import androidx.work.WorkerParameters
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 import ru.nehodov.weatherforecast.repositories.IForecastGateway
@@ -17,7 +19,7 @@ import ru.nehodov.weatherforecast.repositories.IForecastGateway
 class ForecastUpdateWorker(
     context: Context,
     workerParams: WorkerParameters
-) : Worker(context, workerParams), KoinComponent {
+) : CoroutineWorker(context, workerParams), KoinComponent {
 
     companion object {
         private const val TAG = "ForecastUpdateWorker"
@@ -27,15 +29,16 @@ class ForecastUpdateWorker(
 
     var currentLocation: Location? = null
 
-    override fun doWork(): Result {
+    override suspend fun doWork(): Result = withContext(Dispatchers.IO) {
         Log.d(TAG, "ForecastWorker work")
         requestCurrentLocation()
         if (currentLocation != null) {
             forecastGateway.updateForecast(currentLocation!!)
             Log.d(TAG, "ForecastWorker refresh location")
-            return Result.success()
+            return@withContext Result.success()
         }
-        return Result.failure()
+
+        return@withContext Result.failure()
     }
 
     private fun requestCurrentLocation() {
