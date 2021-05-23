@@ -7,6 +7,8 @@ import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ObservableField
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.lifecycleScope
+import kotlinx.coroutines.flow.collect
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 import org.koin.core.component.KoinApiExtension
 import org.koin.core.component.KoinComponent
@@ -22,6 +24,7 @@ class DetailsFragment : Fragment(), KoinComponent {
 
     private val viewModel: ForecastViewModel by sharedViewModel()
 
+    private val updateTimeObservable = ObservableField("")
     val dateTime = ObservableField("")
     val description = ObservableField("")
     private val iconPath = ObservableField("")
@@ -31,7 +34,6 @@ class DetailsFragment : Fragment(), KoinComponent {
     val uvi = ObservableField("")
     val pressure = ObservableField("")
     val windSpeed = ObservableField("")
-    val timeUpdate = ObservableField("")
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -55,45 +57,50 @@ class DetailsFragment : Fragment(), KoinComponent {
         binding.uvi = uvi
         binding.pressure = pressure
         binding.windSpeed = windSpeed
-        binding.timeUpdate = timeUpdate
+        binding.timeUpdate = updateTimeObservable
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        viewModel.selectedDayWeather.observe(viewLifecycleOwner) { selectedDailies ->
-            dateTime.set(WeatherUtil.formatDate(selectedDailies.dateTime))
-            if (selectedDailies.weather.isNotEmpty()) {
-                description.set(selectedDailies.weather[0].description)
-                iconPath.set(selectedDailies.weather[0].icon)
-            }
-            maxTemp.set(WeatherUtil.formatTemp(selectedDailies.temp.max))
-            feelsLike.set(
-                getString(
-                    R.string.feels_like_pattern, WeatherUtil.formatTemp(
-                        selectedDailies.feelsLike.day
-                    )
-                )
-            )
-            humidity.set(
-                String.format(
-                    getString(R.string.humidity_pattern),
-                    selectedDailies.humidity
-                )
-            )
-            uvi.set((getString(R.string.uvi_pattern, selectedDailies.uvi)))
-            pressure.set(getString(R.string.pressure_pattern, selectedDailies.pressure))
-            windSpeed.set(getString(R.string.wind_wpeed_pattern, selectedDailies.windSpeed))
-        }
-        viewModel.timeUpdate.observe(viewLifecycleOwner) { timeUpdate ->
-            this.timeUpdate.set(
-                String.format(
+        lifecycleScope.launchWhenResumed {
+            viewModel.selectedDayWeather.collect { selectedDailies ->
+                dateTime.set(WeatherUtil.formatDate(selectedDailies.dateTime))
+                if (selectedDailies.weather.isNotEmpty()) {
+                    description.set(selectedDailies.weather[0].description)
+                    iconPath.set(selectedDailies.weather[0].icon)
+                }
+                maxTemp.set(WeatherUtil.formatTemp(selectedDailies.temp.max))
+                feelsLike.set(
                     getString(
-                        R.string.time_update_pattern,
-                        WeatherUtil.formatTime(timeUpdate)
+                        R.string.feels_like_pattern, WeatherUtil.formatTemp(
+                            selectedDailies.feelsLike.day
+                        )
                     )
                 )
-            )
+                humidity.set(
+                    String.format(
+                        getString(R.string.humidity_pattern),
+                        selectedDailies.humidity
+                    )
+                )
+                uvi.set((getString(R.string.uvi_pattern, selectedDailies.uvi)))
+                pressure.set(getString(R.string.pressure_pattern, selectedDailies.pressure))
+                windSpeed.set(getString(R.string.wind_wpeed_pattern, selectedDailies.windSpeed))
+            }
+        }
+
+        lifecycleScope.launchWhenResumed {
+            viewModel.updateTime.collect { updateTime ->
+                this@DetailsFragment.updateTimeObservable.set(
+                    String.format(
+                        getString(
+                            R.string.time_update_pattern,
+                            WeatherUtil.formatTime(updateTime)
+                        )
+                    )
+                )
+            }
         }
     }
 }

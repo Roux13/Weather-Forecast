@@ -30,6 +30,7 @@ class WeatherUtil {
 
         fun formatDate(unixTime: String?): String {
             if (!unixTime.isNullOrEmpty() && unixTime.matches(CORRECT_UNIX_TIME_FORMAT)) {
+
                 val instant: Instant = Instant.ofEpochSecond(unixTime.toLong())
                 val date: LocalDate = instant.atZone(ZoneId.systemDefault()).toLocalDate()
                 val now: LocalDate = LocalDate.now()

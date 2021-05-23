@@ -3,10 +3,7 @@ package ru.nehodov.weatherforecast
 import android.app.Application
 import org.koin.android.ext.koin.androidContext
 import org.koin.core.context.startKoin
-import ru.nehodov.weatherforecast.di.modules.DataModule
-import ru.nehodov.weatherforecast.di.modules.DatabaseModule
-import ru.nehodov.weatherforecast.di.modules.NetworkModule
-import ru.nehodov.weatherforecast.di.modules.ViewModelModule
+import ru.nehodov.weatherforecast.di.modules.*
 
 class App : Application() {
     override fun onCreate() {
@@ -19,7 +16,8 @@ class App : Application() {
                 DatabaseModule.module,
                 DataModule.module,
                 NetworkModule.module,
-                ViewModelModule.module
+                ViewModelModule.module,
+                LocationModule.locationModule
             )
         }
     }

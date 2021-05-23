@@ -20,6 +20,8 @@ object DataModule {
         single<IUpdateTimeRepository> { UpdateTimeRepository(get()) }
 
         single<IForecastWebRepository> { ForecastWebRepository(get()) }
+
+        single<IAddressRepository> { AddressRepository(get()) }
     }
 
 }

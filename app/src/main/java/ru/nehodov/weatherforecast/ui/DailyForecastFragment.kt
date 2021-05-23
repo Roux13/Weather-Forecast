@@ -5,10 +5,12 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.DiffUtil.DiffResult
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import kotlinx.coroutines.flow.collect
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 import org.koin.core.component.KoinApiExtension
 import org.koin.core.component.KoinComponent
@@ -42,9 +44,10 @@ class DailyForecastFragment : Fragment(), SelectedDayListener, KoinComponent {
             setHasFixedSize(true)
             adapter = this@DailyForecastFragment.adapter
         }
-        viewModel.dailyForecast.observe(viewLifecycleOwner) {
-            if (it != null) {
-                diffUtilCallback = DailyDiffUtilCallback(adapter.getDailyForecasts(), newList = it)
+        lifecycleScope.launchWhenResumed {
+            viewModel.dailyForecast.collect {
+                diffUtilCallback =
+                    DailyDiffUtilCallback(adapter.getDailyForecasts(), newList = it)
                 diffResult = DiffUtil.calculateDiff(diffUtilCallback)
                 adapter.setDailyForecasts(it)
                 diffResult.dispatchUpdatesTo(adapter)

@@ -1,12 +1,13 @@
 package ru.nehodov.weatherforecast.repositories
 
+import kotlinx.coroutines.flow.Flow
 import ru.nehodov.weatherforecast.database.ForecastDatabase
 import ru.nehodov.weatherforecast.entities.Current
 
 interface ICurrentDbRepository {
     suspend fun deleteAll()
     suspend fun insert(current: Current)
-    suspend fun getCurrentWeather(): Current
+    fun getCurrentWeather(): Flow<Current>
 }
 
 class CurrentDbRepository(private val db: ForecastDatabase) : ICurrentDbRepository {
@@ -18,7 +19,7 @@ class CurrentDbRepository(private val db: ForecastDatabase) : ICurrentDbReposito
         db.currentDao.insert(current)
     }
 
-    override suspend fun getCurrentWeather(): Current {
+    override fun getCurrentWeather(): Flow<Current> {
         return db.currentDao.currentWeatherData()
     }
 }

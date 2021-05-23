@@ -1,11 +1,14 @@
 package ru.nehodov.weatherforecast.viewmodels
 
 import android.location.Location
-import androidx.lifecycle.LiveData
+import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.CoroutineExceptionHandler
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import org.koin.core.component.KoinApiExtension
 import org.koin.core.component.KoinComponent
@@ -18,11 +21,13 @@ import ru.nehodov.weatherforecast.utils.CurrentToDailyConverter
 class ForecastViewModel : ViewModel(), KoinComponent {
 
     companion object {
-        private const val TODAY = 0
+        val TAG: String = ForecastViewModel::class.java.simpleName
+
+        const val TODAY = 0
     }
 
     private val coroutineExceptionHandler =
-        CoroutineExceptionHandler { coroutineContext, throwable ->
+        CoroutineExceptionHandler { _, throwable ->
             throwable.printStackTrace()
         }
 
@@ -31,48 +36,107 @@ class ForecastViewModel : ViewModel(), KoinComponent {
     private val currentLocationRepository: ICurrentLocationDbRepository by inject()
     private val timeUpdateRepository: IUpdateTimeRepository by inject()
     private val forecastGateway: IForecastGateway by inject()
+    private val addressRepository: IAddressRepository by inject()
 
-    private val _selectedDayWeather: MutableLiveData<Daily> =
-        MutableLiveData(Daily(feelsLike = FeelsLike(), temp = Temp()))
-    val selectedDayWeather: LiveData<Daily> = _selectedDayWeather
+    private val _selectedDayWeather: MutableStateFlow<Daily> =
+        MutableStateFlow(Daily(feelsLike = FeelsLike(), temp = Temp()))
+    val selectedDayWeather: StateFlow<Daily>
+        get() = _selectedDayWeather
 
-    private val _dailyForecast: MutableLiveData<List<Daily>> = MutableLiveData(emptyList())
-    val dailyForecast: LiveData<List<Daily>> = _dailyForecast
+    private val _currentForecast: MutableStateFlow<Current> = MutableStateFlow(Current())
+    val currentForecast: StateFlow<Current>
+        get() = _currentForecast
 
-    private val _hourlyForecast: MutableLiveData<List<Hourly>> = MutableLiveData(emptyList())
-    private val hourlyForecast: LiveData<List<Hourly>> = _hourlyForecast
+    private val _dailyForecast: MutableStateFlow<List<Daily>> = MutableStateFlow(emptyList())
+    val dailyForecast: StateFlow<List<Daily>>
+        get() = _dailyForecast
 
-    private val _currentLocation: MutableLiveData<CurrentLocation> = MutableLiveData(
+    private val _hourlyForecast: MutableStateFlow<List<Hourly>> = MutableStateFlow(emptyList())
+    val hourlyForecast: StateFlow<List<Hourly>>
+        get() = _hourlyForecast
+
+    private val _currentLocation: MutableStateFlow<CurrentLocation> = MutableStateFlow(
         CurrentLocation()
     )
-    val currentLocation: LiveData<CurrentLocation> = _currentLocation
+    val currentLocation: StateFlow<CurrentLocation>
+        get() = _currentLocation
 
-    private val _timeUpdate: MutableLiveData<String> = MutableLiveData("")
-    val timeUpdate: LiveData<String> = _timeUpdate
+    private val _updateTime: MutableStateFlow<String> = MutableStateFlow("")
+    val updateTime: StateFlow<String>
+        get() = _updateTime
 
-    private val selectedDay = MutableLiveData(TODAY)
+    val selectedDay = MutableStateFlow<Int>(TODAY)
     val locationTitle = MutableLiveData("")
 
-
-    fun updateForecast(location: Location) = viewModelScope.launch(coroutineExceptionHandler) {
-        forecastGateway.updateForecast(location)
-        val currentWeatherAsDaily =
-            CurrentToDailyConverter.convert(currentRepository.getCurrentWeather())
-        val dailyList = listOf(currentWeatherAsDaily) + dailyRepository.getDailies()
-        _dailyForecast.postValue(dailyList)
-        _currentLocation.postValue(currentLocationRepository.currentLocationData())
-        _timeUpdate.postValue(timeUpdateRepository.timeUpdateData())
+    init {
+        subscribeCurrentLocationData()
+        subscribeCurrentAddressData()
+        subscribeCurrentWeatherData()
+        subscribeDailiesData()
+        subscribeTimeUpdateData()
         setSelectedDay(TODAY)
     }
 
-    fun setSelectedDay(selectedDay: Int) {
-        this.selectedDay.postValue(selectedDay)
-        _selectedDayWeather.postValue(
-            _dailyForecast.value?.get(selectedDay) ?: Daily(feelsLike = FeelsLike(), temp = Temp())
-        )
+    private fun subscribeCurrentLocationData() = viewModelScope.launch(coroutineExceptionHandler) {
+        currentLocationRepository.currentLocationData().collect { currentLocation ->
+            _currentLocation.value = currentLocation
+        }
     }
 
-    fun setLocationTitle(title: String) {
+    private fun subscribeCurrentAddressData() = viewModelScope.launch(coroutineExceptionHandler) {
+        currentLocation.collect { currentLocation: CurrentLocation? ->
+            if (currentLocation != null) {
+                Log.d(
+                    TAG, String.format(
+                        "Current location is not null, latitude: %f, longitude: %f",
+                        currentLocation.latitude, currentLocation.longitude
+                    )
+                )
+                setLocationTitle(addressRepository.getCurrentAddress(currentLocation))
+            }
+        }
+    }
+
+    private fun subscribeCurrentWeatherData() = viewModelScope.launch(coroutineExceptionHandler) {
+        currentRepository.getCurrentWeather().collect { current ->
+            _currentForecast.value = current
+        }
+    }
+
+    private fun subscribeDailiesData() = viewModelScope.launch(coroutineExceptionHandler) {
+        dailyRepository.getDailies().collect { dailies ->
+            _dailyForecast.value = dailies
+        }
+    }
+
+    private fun subscribeTimeUpdateData() = viewModelScope.launch(coroutineExceptionHandler) {
+        timeUpdateRepository.timeUpdateData().collect { updateTime ->
+            _updateTime.value = updateTime
+        }
+    }
+
+    fun updateForecast(location: Location) = viewModelScope.launch(coroutineExceptionHandler) {
+        forecastGateway.updateForecast(location)
+    }
+
+    fun setSelectedDay(selectedDay: Int) {
+        this.selectedDay.value = selectedDay
+        viewModelScope.launch(coroutineExceptionHandler) {
+            _dailyForecast.collect { dailies ->
+                if (dailies.lastIndex >= selectedDay) {
+                    if (selectedDay == 0) {
+                        val currentWeatherAsDaily =
+                            CurrentToDailyConverter.convert(_currentForecast.value)
+                        _selectedDayWeather.value = currentWeatherAsDaily
+                    } else {
+                        _selectedDayWeather.value = dailies[selectedDay]
+                    }
+                }
+            }
+        }
+    }
+
+    private fun setLocationTitle(title: String) {
         this.locationTitle.value = title
     }
 

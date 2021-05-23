@@ -25,33 +25,35 @@ class ForecastGateway(
     override suspend fun updateForecast(location: Location) {
         val forecast = forecastWebRepository.updateForecast(location)
 
-        currentDbRepository.deleteAll()
-        currentDbRepository.insert(forecast.current)
+        forecast?.let {
+            currentDbRepository.deleteAll()
+            currentDbRepository.insert(forecast.current)
 
-        dailiesDbRepository.deleteAll()
-        dailiesDbRepository.insert(forecast.daily)
+            dailiesDbRepository.deleteAll()
+            dailiesDbRepository.insert(forecast.daily)
 
-        hourliesDbRepository.deleteAll()
-        hourliesDbRepository.insert(forecast.hourly)
+            hourliesDbRepository.deleteAll()
+            hourliesDbRepository.insert(forecast.hourly)
 
-        val latitude: Double = forecast.latitude
-        val longitude: Double = forecast.longitude
-        Log.d(
-            TAG, String.format(
-                "Repository updated current location,"
-                        + " latitude: %f, longitude: %f", latitude, longitude
+            val latitude: Double = forecast.latitude
+            val longitude: Double = forecast.longitude
+            Log.d(
+                TAG, String.format(
+                    "Repository updated current location,"
+                            + " latitude: %f, longitude: %f", latitude, longitude
+                )
             )
-        )
-        currentLocationDbRepository.deleteAll()
-        currentLocationDbRepository.insert(
-            CurrentLocation(
-                timezone = forecast.timezone,
-                latitude = latitude,
-                longitude = longitude
+            currentLocationDbRepository.deleteAll()
+            currentLocationDbRepository.insert(
+                CurrentLocation(
+                    timezone = forecast.timezone,
+                    latitude = latitude,
+                    longitude = longitude
+                )
             )
-        )
 
-        updateTimeRepository.deleteAll()
-        updateTimeRepository.insert(TimeUpdate(time = forecast.current.dateTime))
+            updateTimeRepository.deleteAll()
+            updateTimeRepository.insert(TimeUpdate(time = forecast.current.dateTime))
+        }
     }
 }

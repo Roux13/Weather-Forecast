@@ -4,14 +4,12 @@ import android.Manifest
 import android.content.DialogInterface
 import android.content.Intent
 import android.content.pm.PackageManager
-import android.location.Geocoder
 import android.location.Location
 import android.location.LocationManager
 import android.os.Build
 import android.os.Bundle
 import android.os.Looper
 import android.provider.Settings
-import android.util.Log
 import android.view.MenuItem
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts.RequestPermission
@@ -23,15 +21,13 @@ import androidx.preference.PreferenceManager
 import androidx.work.*
 import com.google.android.gms.location.*
 import com.google.android.material.snackbar.Snackbar
+import kotlinx.coroutines.CoroutineExceptionHandler
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.component.KoinApiExtension
 import org.koin.core.component.KoinComponent
 import ru.nehodov.weatherforecast.databinding.MainActivityBinding
-import ru.nehodov.weatherforecast.entities.CurrentLocation
 import ru.nehodov.weatherforecast.settings.SettingsActivity
 import ru.nehodov.weatherforecast.viewmodels.ForecastViewModel
-import java.io.IOException
-import java.util.*
 import java.util.concurrent.TimeUnit
 
 @KoinApiExtension
@@ -42,8 +38,12 @@ class MainActivity : AppCompatActivity(), KoinComponent {
         private const val REFRESH_REQUEST_TAG = "periodic_work_refresh_request"
     }
 
+    private val coroutineExceptionHandler =
+        CoroutineExceptionHandler { _, throwable ->
+            throwable.printStackTrace()
+        }
 
-    private val foreCastViewModel: ForecastViewModel by viewModel()
+    private val forecastViewModel: ForecastViewModel by viewModel()
 
     private var requestPermissionLauncher: ActivityResultLauncher<String>? = null
 
@@ -56,10 +56,9 @@ class MainActivity : AppCompatActivity(), KoinComponent {
         val binding: MainActivityBinding =
             DataBindingUtil.setContentView(this, R.layout.main_activity)
         binding.lifecycleOwner = this
-        binding.viewmodel = foreCastViewModel
+        binding.viewmodel = forecastViewModel
         WorkManager.getInstance(this).cancelAllWork()
         requestPermissions()
-        init()
     }
 
     private fun requestPermissions() {
@@ -91,38 +90,6 @@ class MainActivity : AppCompatActivity(), KoinComponent {
         }
     }
 
-    private fun init() {
-        foreCastViewModel.currentLocation.observe(this,
-            { currentLocation: CurrentLocation? ->
-                if (currentLocation != null) {
-                    Log.d(
-                        TAG, String.format(
-                            "Current location is not null, latitude: %f, longitude: %f",
-                            currentLocation.latitude, currentLocation.longitude
-                        )
-                    )
-                    val geocoder = Geocoder(this, Locale.getDefault())
-                    try {
-                        val latitude =
-                            if (currentLocation.latitude == 0.0) 1.0 else currentLocation.latitude
-                        val longitude =
-                            if (currentLocation.longitude == 0.0) 1.0 else currentLocation.longitude
-                        if (geocoder.getFromLocation(latitude, longitude, 1).isNotEmpty()) {
-                            val locationName =
-                                geocoder.getFromLocation(latitude, longitude, 1)[0]
-                                    .getAddressLine(0)
-                            Log.d(TAG, locationName)
-                            foreCastViewModel.setLocationTitle(locationName)
-                        }
-                    } catch (e: IOException) {
-                        e.printStackTrace()
-                    }
-                } else {
-                    Log.d(TAG, "CurrentLocation is null")
-                }
-            })
-    }
-
     private fun requestCurrentLocation() {
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
             == PackageManager.PERMISSION_DENIED
@@ -131,7 +98,7 @@ class MainActivity : AppCompatActivity(), KoinComponent {
             requestCurrentLocation()
         } else {
             if (locationCallback == null) {
-                locationCallback = configureLocationCallback(foreCastViewModel)
+                locationCallback = configureLocationCallback(forecastViewModel)
             }
             fusedLocationProviderClient = LocationServices
                 .getFusedLocationProviderClient(this)
@@ -146,7 +113,7 @@ class MainActivity : AppCompatActivity(), KoinComponent {
                 fusedLocationProviderClient!!.lastLocation
                     .addOnSuccessListener { location: Location? ->
                         if (location != null) {
-                            foreCastViewModel.updateForecast(location)
+                            forecastViewModel.updateForecast(location)
                         } else {
                             showAlertMessageNoGps()
                         }
