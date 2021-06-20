@@ -14,6 +14,7 @@ import org.koin.core.component.KoinApiExtension
 import org.koin.core.component.KoinComponent
 import ru.nehodov.weatherforecast.R
 import ru.nehodov.weatherforecast.databinding.FragmentDetailsBinding
+import ru.nehodov.weatherforecast.entities.DetailsDisplayEntity
 import ru.nehodov.weatherforecast.utils.WeatherUtil
 import ru.nehodov.weatherforecast.viewmodels.ForecastViewModel
 
@@ -25,15 +26,8 @@ class DetailsFragment : Fragment(), KoinComponent {
     private val viewModel: ForecastViewModel by sharedViewModel()
 
     private val updateTimeObservable = ObservableField("")
-    val dateTime = ObservableField("")
-    val description = ObservableField("")
-    private val iconPath = ObservableField("")
-    private val maxTemp = ObservableField("")
-    val feelsLike = ObservableField("")
-    val humidity = ObservableField("")
-    val uvi = ObservableField("")
-    val pressure = ObservableField("")
-    val windSpeed = ObservableField("")
+
+    private val detailsObservable = ObservableField(DetailsDisplayEntity())
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -48,15 +42,7 @@ class DetailsFragment : Fragment(), KoinComponent {
         )
 
         binding.lifecycleOwner = this
-        binding.dateTime = dateTime
-        binding.description = description
-        binding.iconPath = iconPath
-        binding.maxTemp = maxTemp
-        binding.feelsLike = feelsLike
-        binding.humidity = humidity
-        binding.uvi = uvi
-        binding.pressure = pressure
-        binding.windSpeed = windSpeed
+        binding.detailsObservable = detailsObservable
         binding.timeUpdate = updateTimeObservable
         return binding.root
     }
@@ -65,28 +51,39 @@ class DetailsFragment : Fragment(), KoinComponent {
         super.onViewCreated(view, savedInstanceState)
         lifecycleScope.launchWhenResumed {
             viewModel.selectedDayWeather.collect { selectedDailies ->
-                dateTime.set(WeatherUtil.formatDate(selectedDailies.dateTime))
-                if (selectedDailies.weather.isNotEmpty()) {
-                    description.set(selectedDailies.weather[0].description)
-                    iconPath.set(selectedDailies.weather[0].icon)
-                }
-                maxTemp.set(WeatherUtil.formatTemp(selectedDailies.temp.max))
-                feelsLike.set(
+                val dateTime = WeatherUtil.formatDate(selectedDailies.dateTime)
+                val description =
+                    if (selectedDailies.weather.isNotEmpty()) selectedDailies.weather[0].description else ""
+                val iconPath =
+                    if (selectedDailies.weather.isNotEmpty()) selectedDailies.weather[0].icon else ""
+                val maxTemp = WeatherUtil.formatTemp(selectedDailies.temp.max)
+                val feelsLike =
                     getString(
                         R.string.feels_like_pattern, WeatherUtil.formatTemp(
                             selectedDailies.feelsLike.day
                         )
                     )
-                )
-                humidity.set(
+                val humidity =
                     String.format(
                         getString(R.string.humidity_pattern),
                         selectedDailies.humidity
                     )
+                val uvi = (getString(R.string.uvi_pattern, selectedDailies.uvi))
+                val pressure = getString(R.string.pressure_pattern, selectedDailies.pressure)
+                val windSpeed = getString(R.string.wind_wpeed_pattern, selectedDailies.windSpeed)
+                detailsObservable.set(
+                    DetailsDisplayEntity(
+                        dateTime,
+                        description,
+                        iconPath,
+                        maxTemp,
+                        feelsLike,
+                        humidity,
+                        uvi,
+                        pressure,
+                        windSpeed
+                    )
                 )
-                uvi.set((getString(R.string.uvi_pattern, selectedDailies.uvi)))
-                pressure.set(getString(R.string.pressure_pattern, selectedDailies.pressure))
-                windSpeed.set(getString(R.string.wind_wpeed_pattern, selectedDailies.windSpeed))
             }
         }
 

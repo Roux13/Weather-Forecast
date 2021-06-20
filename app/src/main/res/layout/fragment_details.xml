@@ -6,42 +6,11 @@
     <data>
 
         <import type="androidx.databinding.ObservableField" />
+        <import type="ru.nehodov.weatherforecast.entities.DetailsDisplayEntity" />
 
         <variable
-            name="dateTime"
-            type="ObservableField&lt;String&gt;" />
-
-        <variable
-            name="description"
-            type="ObservableField&lt;String&gt;" />
-
-        <variable
-            name="iconPath"
-            type="ObservableField&lt;String&gt;" />
-
-        <variable
-            name="maxTemp"
-            type="ObservableField&lt;String&gt;" />
-
-        <variable
-            name="feelsLike"
-            type="ObservableField&lt;String&gt;" />
-
-        <variable
-            name="humidity"
-            type="ObservableField&lt;String&gt;" />
-
-        <variable
-            name="uvi"
-            type="ObservableField&lt;String&gt;" />
-
-        <variable
-            name="pressure"
-            type="ObservableField&lt;String&gt;" />
-
-        <variable
-            name="windSpeed"
-            type="ObservableField&lt;String&gt;" />
+            name="detailsObservable"
+            type="ObservableField&lt;DetailsDisplayEntity>" />
 
         <variable
             name="timeUpdate"
@@ -60,7 +29,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="64dp"
-            android:text="@{dateTime}"
+            android:text="@{detailsObservable.dateTime}"
             android:textColor="@color/white"
             android:textSize="20sp"
             android:textStyle="bold"
@@ -86,7 +55,7 @@
             android:layout_height="wrap_content"
             android:textColor="@color/white"
             android:textSize="20sp"
-            android:text="@{description}"
+            android:text="@{detailsObservable.description}"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/updateTimeTV"
@@ -99,7 +68,7 @@
             android:layout_marginStart="64dp"
             android:layout_marginTop="8dp"
             android:contentDescription="@string/weather_icon"
-            app:loadWeatherIcon="@{iconPath}"
+            app:loadWeatherIcon="@{detailsObservable.iconPath}"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/weatherDescriptionTV"
             tools:srcCompat="@tools:sample/avatars" />
@@ -112,7 +81,7 @@
             android:textColor="@color/white"
             android:textSize="48sp"
             android:textStyle="bold"
-            android:text="@{maxTemp}"
+            android:text="@{detailsObservable.maxTemp}"
             app:layout_constraintStart_toEndOf="@+id/updateTimeTV"
             app:layout_constraintTop_toBottomOf="@+id/weatherDescriptionTV"
             tools:text="+15" />
@@ -123,7 +92,7 @@
             android:layout_height="wrap_content"
             android:textColor="@color/white"
             android:textSize="20sp"
-            android:text="@{feelsLike}"
+            android:text="@{detailsObservable.feelsLike}"
             app:layout_constraintStart_toStartOf="@+id/detailsTempTV"
             app:layout_constraintTop_toBottomOf="@+id/detailsTempTV"
             tools:text="Feels like: +11" />
@@ -135,7 +104,7 @@
             android:layout_marginStart="16dp"
             android:layout_marginTop="32dp"
             android:textColor="@color/white"
-            android:text="@{humidity}"
+            android:text="@{detailsObservable.humidity}"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/feelsLikeTV"
             tools:text="Humidity: 34%" />
@@ -145,7 +114,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textColor="@color/white"
-            android:text="@{uvi}"
+            android:text="@{detailsObservable.uvi}"
             app:layout_constraintStart_toStartOf="@+id/windSpeedTv"
             app:layout_constraintTop_toTopOf="@+id/humidityTV"
             tools:text="UVI: 9.17" />
@@ -156,7 +125,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
             android:textColor="@color/white"
-            android:text="@{pressure}"
+            android:text="@{detailsObservable.pressure}"
             app:layout_constraintStart_toStartOf="@+id/humidityTV"
             app:layout_constraintTop_toBottomOf="@id/humidityTV"
             tools:text="Pressure: 1009 pa" />
@@ -168,7 +137,7 @@
             android:layout_marginTop="16dp"
             android:layout_marginEnd="16dp"
             android:textColor="@color/white"
-            android:text="@{windSpeed}"
+            android:text="@{detailsObservable.windSpeed}"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@id/uviTv"
             tools:text="Wind speed: 2.53 m/sec" />
